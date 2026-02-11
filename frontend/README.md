@@ -10,7 +10,7 @@ cd frontend/react-app
 npm install
 ```
 
-2. **Start development server**
+2. **Start server**
 ```
 npm start
 ```
