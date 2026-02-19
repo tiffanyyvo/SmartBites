@@ -6,13 +6,13 @@
 
 1. **Navigate to frontend folder and install dependencies**
 ```
-cd frontend/react-app
+cd frontend/SmartBites-app
 npm install
 ```
 
 2. **Start server**
 ```
-npm start
+npm run dev
 ```
 
 # Getting Started with Create React App
