@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import SmartBitesLogo from './assets/SmartBites_logo.png'
 import './App.css'
 
-const Create = () => {
+function Home () {
   const [count, setCount] = useState(0)
 
   return (
@@ -14,7 +14,7 @@ const Create = () => {
         </a>
       </div>
       <p className="titles">
-        <h1>Welcome to Create Page</h1>
+        <h1>Welcome to SmartBites</h1>
         <h2>Interactive way to eat better with what you have</h2>
       </p>
       <div className="card">
@@ -29,4 +29,4 @@ const Create = () => {
   );
 };
 
-export default Create
+export default Home
