@@ -1,0 +1,7 @@
+google
+google-genai
+google-generativeai
+flask-cors
+flask
+python-dotenv
+gunicorn
