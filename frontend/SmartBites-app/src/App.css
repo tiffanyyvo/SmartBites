@@ -19,12 +19,16 @@
 }
 
 .header_block {
-  width: 1200px;
-  height: 200px;
+  width: auto;
+  height: auto;
   background-color: #A5E698;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  
   top: 50px;
-  left: 160px;
+  
+  /* testing purposes*/
 }
 
 @keyframes logo-spin {
@@ -44,11 +48,61 @@
 
 .titles {
   color: #51090A;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   /*color scheme colors: #A5E698 (green), #83D6E8 (blue), #51090A (brown), #D3A2EF (purple)*/
 }
 
-.card {
+.login_words{
+  color: #f8f8f8;
+  font-size: medium;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  color: #51090A;
+  width:300px;
+  height: auto;
   padding: 2em;
+}
+
+.create_button{
+  width: 10cm;
+  height: 10cm;
+  background-color: #83D6E8;
+  position: fixed;
+  display: flex;
+  left: 30px;
+  /*justify-content: center;*/
+}
+
+.search_button{
+  width: 10cm;
+  height: 10cm;
+  background-color: #83D6E8;
+  position: fixed;
+  display: flex;
+  left: 600px;
+}
+
+.share_button{
+  width: 10cm;
+  height: 10cm;
+  background-color: #83D6E8;
+  position: fixed;
+  display: flex;
+  right: 30px;
+}
+
+.login_button{
+  width: 4cm;
+  height: 1cm;
+  background-color: #0b0c0c;
+  position: fixed;
+  display: flex;
+  top: 10px;
+  right: 30px;
 }
 
 .read-the-docs {
