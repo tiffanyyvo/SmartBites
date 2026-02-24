@@ -7,7 +7,7 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-6. **To run the backend**
+2. **To run the backend**
 ```bash
 python app.py
 ```
