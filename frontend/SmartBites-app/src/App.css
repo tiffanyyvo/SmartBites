@@ -1,116 +1,182 @@
-#root {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  /*background-color: beige;*/
+.landing-container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* !!!get opinion -this line prevents horizontal scrolling */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-.header_block {
-  width: auto;
-  height: auto;
-  background-color: #A5E698;
-  position: absolute;
+/* top page bar */
+.navbar {
   display: flex;
-  justify-content: center;
-  
-  top: 50px;
-  
-  /* testing purposes*/
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.titles {
-  color: #51090A;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  /*color scheme colors: #A5E698 (green), #83D6E8 (blue), #51090A (brown), #D3A2EF (purple)*/
-}
-
-.login_words{
-  color: #f8f8f8;
-  font-size: medium;
-  display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 1.5rem 4rem;
+  background-color: white;
 }
 
-.button {
-  color: #51090A;
-  width:300px;
-  height: auto;
-  padding: 2em;
+.logo-img {
+  height: 40px;
 }
 
-.create_button{
-  width: 10cm;
-  height: 10cm;
-  background-color: #83D6E8;
-  position: fixed;
+.nav-links {
   display: flex;
-  left: 30px;
-  /*justify-content: center;*/
+  gap: 20px;
+  list-style: none;
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
-.search_button{
-  width: 10cm;
-  height: 10cm;
-  background-color: #83D6E8;
-  position: fixed;
+.nav-actions {
   display: flex;
-  left: 600px;
+  gap: 15px;
 }
 
-.share_button{
-  width: 10cm;
-  height: 10cm;
-  background-color: #83D6E8;
-  position: fixed;
+button {
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+}
+
+.btn-signin {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.btn-register {
+  background-color: #333;
+  color: white;
+}
+
+/* title */
+.title-section {
+  background-color: #a4e5aa; /* Figma Green */
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.title-section h1 {
+  font-size: 4rem;
+  margin: 0;
+  font-weight: 800;
+}
+
+.title-section h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.title-actions {
   display: flex;
-  right: 30px;
+  justify-content: center;
+  gap: 15px;
 }
 
-.login_button{
-  width: 4cm;
-  height: 1cm;
-  background-color: #0b0c0c;
-  position: fixed;
+/* features */
+.features-section {
+  padding: 60px 4rem;
+  background-color: white;
+}
+
+.features-title {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.feature-item {
   display: flex;
-  top: 10px;
-  right: 30px;
+  gap: 15px;
+  align-items: flex-start;
 }
 
-.read-the-docs {
-  color: #c497e0;
+.icon {
+  font-size: 1.5rem;
 }
 
-.nav_temp {
-  position: absolute;
-  top: 0px;
-  left: 0px;
+.feature-text h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+}
+
+.feature-text p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* demo pic */
+.demo-section {
+  background-color: #f4f4f4;
+  padding: 60px 4rem;
+}
+
+.demo-image-placeholder {
+  background-color: #ddd;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #555;
+  font-weight: bold;
+}
+
+/* footer */
+.footer-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 60px 4rem;
+  background-color: white;
+}
+
+.logo-img-small {
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  font-size: 1.2rem;
+  letter-spacing: 10px;
+  margin-top: 10px;
+}
+
+.footer-columns {
+  display: flex;
+  gap: 80px;
+}
+
+.footer-col h4 {
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col li {
+  color: #666;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  font-weight: bold;
 }
