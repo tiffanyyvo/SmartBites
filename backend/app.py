@@ -1,66 +1,37 @@
-from flask import Flask, request, jsonify, redirect, url_for
-from google import genai
-from google.genai import types
-import base64
-import os
-import json
-from dotenv import load_dotenv
+from flask_cors import CORS
+from gemini_client import GeminiClient
 
-load_dotenv()
+CORS(app)
 
-app = Flask(__name__)
-client = genai.Client(api_key=os.getenv('GEMINI_API_KEY'))
-
-@app.route("/")
-def home():
-    return "Homepage Test"
+gemini = GeminiClient()
 
 @app.route('/analyze-fridge', methods=['POST'])
 def analyze_fridge():
-    print("Files received:", request.files)
-    print("Form data:", request.form)
-
-    if 'image' not in request.files:
+    data = request.get_json()
+    image_data = data.get('image')
+    
+    if not image_data:
         return jsonify({"error": "No image provided"}), 400
     
-    image = request.files['image']
-    image_data = base64.b64encode(image.read()).decode('utf-8')
-    
-    try:
-        response = client.models.generate_content(
-            model='gemini-2.5-flash',
-            contents=[
-                types.Part.from_bytes(
-                    data=base64.b64decode(image_data),
-                    mime_type=image.content_type
-                ),
-                """Look at this fridge/pantry image and list every food ingredient you can identify.
-                Return ONLY a JSON array of strings, nothing else. 
-                Example format: ["eggs", "milk", "cheddar cheese", "carrots"]
-                Be specific (e.g. "cheddar cheese" not just "dairy")."""
-            ],
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-            )
-        )
+    result = gemini.analyze_fridge_image(image_data)
+    return jsonify(result)
 
-        raw = response.text.strip()
-        ingredients = json.loads(raw)
-
-        return jsonify({
-            "status": "success",
-            "ingredients": ingredients
-        })
+@app.route('/generate-recipe', methods=['POST'])
+def generate_recipe():
+    data = request.get_json()
+    ingredients = data.get('ingredients', [])
+    dietary_restrictions = data.get('dietary_restrictions', [])
+    cuisine_preference = data.get('cuisine_preference')
     
-    except json.JSONDecodeError:
-        return jsonify({
-            "status": "partial",
-            "raw_response": response.text,
-            "message": "Could not parse ingredients as JSON"
-        }), 500
+    if not ingredients:
+        return jsonify({"error": "No ingredients provided"}), 400
     
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    result = gemini.generate_recipes(
+        ingredients, 
+        dietary_restrictions, 
+        cuisine_preference
+    )
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
