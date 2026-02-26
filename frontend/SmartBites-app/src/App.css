@@ -17,7 +17,7 @@
 }
 
 .logo-img {
-  height: 40px;
+  height: 60px;
 }
 
 .nav-links {
@@ -51,6 +51,12 @@ button {
 .btn-register {
   background-color: #333;
   color: white;
+}
+
+.btn-link {
+  background-color: transparent;
+  font-size: 1.1rem;
+  color: rgb(9, 9, 9);
 }
 
 /* title */

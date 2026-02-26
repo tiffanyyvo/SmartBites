@@ -11,16 +11,16 @@ function LandingPage() {
         </div>
         <ul className="nav-links">
           <li>Solutions</li>
-          <li>Community</li>
-          <li>Resources</li>
-          <li>Contact</li>
+          <Link to="/explore"><li>Explore</li></Link>
+          <Link to="/resources"><li>Resources</li></Link>
+          <Link to="/contact"><li>Contact</li></Link>
         </ul>
         <div className="nav-actions">
             {/* sign in goes to snap for now, until sign in is implemented*/}
             <Link to="/snap">
                 <button className="btn-signin">Sign In</button>
             </Link>
-            <Link to="/snap">
+            <Link to="/register">
                 <button className="btn-register">Register</button>
             </Link>
         </div>
@@ -34,7 +34,7 @@ function LandingPage() {
             <Link to ="/snap">
                 <button className="btn-signin">Sign In</button>
           </Link>
-          <Link to="/snap">
+          <Link to="/register">
             <button className="btn-register">Register</button>
           </Link>
         </div>
@@ -48,42 +48,42 @@ function LandingPage() {
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Snap</h4>
-              <p>description</p>
+              <p>Snap a picture of your fridge or pantry</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Scan</h4>
-              <p>description</p>
+              <p>SmartBites will scan your upload and send it through our AI</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Savor</h4>
-              <p>description</p>
+              <p>Delight in the Recipes that SmartBites provides from your submission</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Explore</h4>
-              <p>talk about community aspects</p>
+              <p>Explore from what other users have found to be good recipes and best practices</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Zero Waste</h4>
-              <p>talk about a zero waste mission</p>
+              <p>SmartBites aims to eliminate unnecessary waste of food on a daily basis</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Save</h4>
-              <p>talk about saving recipes</p>
+              <p>If you find a recipe that you like, you can save it for later or future use</p>
             </div>
           </div>
         </div>
@@ -105,13 +105,13 @@ function LandingPage() {
            <div className="social-icons">𝕏 📷</div>
         </div>
         <div className="footer-columns">
-          <div className="footer-col">
+          {/*<div className="footer-col">
             <h4>Add Title</h4>
             <ul>
               <li>lala</li>
               <li>lala</li>
             </ul>
-          </div>
+          </div>*/}
           <div className="footer-col">
             <h4>Our Design</h4>
             <ul>
@@ -125,6 +125,7 @@ function LandingPage() {
             <ul>
               <li>Contact Us</li>
               <li>Best practices</li>
+              <li>FAQs</li>
             </ul>
           </div>
         </div>
