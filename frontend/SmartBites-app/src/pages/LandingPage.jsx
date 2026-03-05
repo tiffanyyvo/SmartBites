@@ -10,7 +10,6 @@ function LandingPage() {
           <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" />
         </div>
         <ul className="nav-links">
-          <li>Solutions</li>
           <Link to="/explore"><li>Explore</li></Link>
           <Link to="/resources"><li>Resources</li></Link>
           <Link to="/contact"><li>Contact</li></Link>
@@ -48,42 +47,42 @@ function LandingPage() {
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Snap</h4>
-              <p>Snap a picture of your fridge or pantry</p>
+              <p>Snap a picture of your fridge or pantry.</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Scan</h4>
-              <p>SmartBites will scan your upload and send it through our AI</p>
+              <p>SmartBites will scan your upload and send it through our AI.</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Savor</h4>
-              <p>Delight in the Recipes that SmartBites provides from your submission</p>
+              <p>Savor the delish Recipes that SmartBites provides from your submission.</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Explore</h4>
-              <p>Explore from what other users have found to be good recipes and best practices</p>
+              <p>Explore recipies generated and loved by other users.</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Zero Waste</h4>
-              <p>SmartBites aims to eliminate unnecessary waste of food on a daily basis</p>
+              <p>On a mission to eliminate every day food waste.</p>
             </div>
           </div>
           <div className="feature-item">
             <span className="icon">ⓘ</span>
             <div className="feature-text">
               <h4>Save</h4>
-              <p>If you find a recipe that you like, you can save it for later or future use</p>
+              <p>If you find a recipe that you like, you can save it for later!</p>
             </div>
           </div>
         </div>
@@ -101,8 +100,6 @@ function LandingPage() {
       <footer className="footer-section">
         <div className="footer-logo">
            <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img-small" />
-           /* we can get rid of these i just think they look so cute and professional */
-           <div className="social-icons">𝕏 📷</div>
         </div>
         <div className="footer-columns">
           {/*<div className="footer-col">
@@ -121,10 +118,10 @@ function LandingPage() {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>Resources</h4>
+            <h4>About Us</h4>
             <ul>
+              <li>Meet our Team</li>
               <li>Contact Us</li>
-              <li>Best practices</li>
               <li>FAQs</li>
             </ul>
           </div>

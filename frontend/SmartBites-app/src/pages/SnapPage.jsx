@@ -12,42 +12,80 @@ function SnapPage() {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      {/* left side bar */}
-      <nav style={{ marginRight: '20px' }}>
-        <ul>
-          <li><Link to="/snap">Snap</Link></li>
-          <li><Link to="/explore">Explore</Link></li>
-          <li><Link to="/my-recipes">My Recipes</Link></li>
-        </ul>
-      </nav>
+      <div className="snap-layout">
+        {/* left sidebar */}
+        <nav className="snap-sidebar">
+          <div className="sidebar-top-icons">
+            <div className="icon-menu">≡</div>
+          </div>
+          <ul className="sidebar-links">
+            <li>
+              <Link to="/snap">
+                <span className="nav-text">Snap</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/explore">
+                <span className="nav-text">Explore</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/my-recipes">
+                <span className="nav-text">My Recipes</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
-      {/* middle section */}
-      <div>
-        {!recipeLoaded ? (
-          /* shown pre-AI */
-          <div>
-            <h2>Snap a photo of your fridge</h2>
-            <div className="camera-placeholder" style={{ background: '#e0e0e0', padding: '50px' }}>
-               <p>[Camera / Upload Area]</p>
-            </div>
-            <button onClick={handleGenerateRecipe}>Generate Recipe</button>
+        {/* main area */}
+        <div className="snap-main-area">
+          <div className="white-card">
+            {!recipeLoaded ? (
+              /* pre AI generation */
+              <div className="card-content-wrapper">
+                <div className="card-header">
+                  <span className="back-arrow">←</span>
+                  <div>
+                    <h1>Snap</h1>
+                    <p>Snap a photo of your fridge</p>
+                  </div>
+                </div>
+
+                <div className="camera-display-area">
+                  <div className="placeholder-graphic">
+                  </div>
+                </div>
+
+                <div className="action-buttons">
+                  {/* snap triggers the AI */}
+                  <button className="btn-snap" onClick={handleGenerateRecipe}>
+                    ✓ Snap
+                  </button>
+                  <button className="btn-upload">Upload</button>
+                </div>
+              </div>
+            ) : (
+              /* Shown post AI */
+              <div className="card-content-wrapper">
+                 <div className="card-header">
+                  <span className="back-arrow" onClick={() => setRecipeLoaded(false)} style={{cursor: 'pointer'}}>←</span>
+                  <div>
+                    <h1>Suggested Dish</h1>
+                    <p>Here is your AI-generated recipe based on your fridge!</p>
+                  </div>
+                </div>
+                <div className="recipe-content-area">
+                  <p>Recipe details will map out here...</p>
+                </div>
+                <div className="action-buttons">
+                  <button className="btn-snap" onClick={() => setRecipeLoaded(false)}>Snap Another Photo</button>
+                </div>
+              </div>
+            )}
           </div>
-        ) : (
-          /* Shown post AI */
-          <div>
-            <h2>Suggested Dish</h2>
-            <div className="recipe-content" style={{ background: '#f3e5f5', padding: '50px' }}>
-              <p>Here is your AI-generated recipe based on your fridge!</p>
-              {/* this is where recipie details should go */}
-            </div>
-            {/* if the user wants to take another fridge pic*/}
-            <button onClick={() => setRecipeLoaded(false)}>Snap Another Photo</button>
-          </div>
-        )}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-export default SnapPage;
+  export default SnapPage;
