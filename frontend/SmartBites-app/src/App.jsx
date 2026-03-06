@@ -6,6 +6,7 @@ import MyRecipesPage from './pages/MyRecipesPage';
 import ContactPage from './pages/ContactPage';
 import ResourcesPage from './pages/ResourcesPage';
 import RegisterPage from './pages/RegisterPage';
+import SignInPage from './pages/SignInPage';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/sign-in" element={<SignInPage />} />
       </Routes>
     </BrowserRouter>
   );

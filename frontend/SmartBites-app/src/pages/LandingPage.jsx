@@ -11,12 +11,13 @@ function LandingPage() {
         </div>
         <ul className="nav-links">
           <Link to="/explore"><li>Explore</li></Link>
+          <Link to="/snap"><li>Snap</li></Link>
           <Link to="/resources"><li>Resources</li></Link>
           <Link to="/contact"><li>Contact</li></Link>
         </ul>
         <div className="nav-actions">
             {/* sign in goes to snap for now, until sign in is implemented*/}
-            <Link to="/snap">
+            <Link to="/sign-in">
                 <button className="btn-signin">Sign In</button>
             </Link>
             <Link to="/register">
@@ -30,7 +31,7 @@ function LandingPage() {
         <h1>SmartBites</h1>
         <h2>Snap. Scan. Savor.</h2>
         <div className="title-actions">
-            <Link to ="/snap">
+            <Link to ="/sign-in">
                 <button className="btn-signin">Sign In</button>
           </Link>
           <Link to="/register">

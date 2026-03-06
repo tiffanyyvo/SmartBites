@@ -44,7 +44,9 @@ function SnapPage() {
               /* pre AI generation */
               <div className="card-content-wrapper">
                 <div className="card-header">
-                  <span className="back-arrow">←</span>
+                  <Link to="/">
+                    <button className="button-snap">←</button>
+                  </Link>
                   <div>
                     <h1>Snap</h1>
                     <p>Snap a photo of your fridge</p>
