@@ -20,6 +20,10 @@
   height: 60px;
 }
 
+.demo-img {
+  height: 10px;
+}
+
 .nav-links {
   display: flex;
   gap: 20px;

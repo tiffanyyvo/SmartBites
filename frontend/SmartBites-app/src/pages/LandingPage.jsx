@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import SmartBitesLogo from '../assets/Smartbites_logo.png';
+import FridgeImage from "../assets/fridge_image.png";
 
 function LandingPage() {
   return (
@@ -93,7 +94,7 @@ function LandingPage() {
       <section className="demo-section">
         <div className="demo-image-placeholder">
           {/* need to add a pic here */}
-          <p>[ demo pic/snap page ss can go here]</p>
+          {/*<img src={FridgeImage} alt="FridgeImage" classname="demo-img" />*/}
         </div>
       </section>
 
