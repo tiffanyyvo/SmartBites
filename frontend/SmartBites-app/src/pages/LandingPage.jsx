@@ -94,7 +94,7 @@ function LandingPage() {
       <section className="demo-section">
         <div className="demo-image-placeholder">
           {/* need to add a pic here */}
-          {/*<img src={FridgeImage} alt="FridgeImage" classname="demo-img" />*/}
+          <img src={FridgeImage} alt="FridgeImage" className="demo-img-small-test" />
         </div>
       </section>
 
