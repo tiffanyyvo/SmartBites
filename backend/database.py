@@ -5,7 +5,10 @@ import os
 
 load_dotenv()
 
-uri = os.getenv("SMT_MONGO_URI")
+uri = os.getenv("MONGO_URI")
+if not uri:
+    raise ValueError("MONGO_URI is not set in your .env file")
+
 client = MongoClient(uri, server_api=ServerApi('1'))
 
 try:
