@@ -31,6 +31,11 @@ function RegisterPage() {
                     </p>
 
                     <p>
+                      <label for="username"><b>Username: </b></label>
+                      <input type="text" placeholder="Enter Username" name="username" id="username" required/>
+                    </p>
+
+                    <p>
                       Your Password must contain at least 8 characters, 1 uppercase, 1 lowercase, and a special number
                     </p>
 

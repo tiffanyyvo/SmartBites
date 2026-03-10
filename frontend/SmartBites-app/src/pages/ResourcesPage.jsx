@@ -18,7 +18,7 @@ function ResourcesPage() {
 
                     <p>
                       <label for="password"><b>FAQ: </b></label>
-                      FAQs *LInk to the FAQ question
+                      FAQs *Link to the FAQ question
                     </p>
 
                     <p>
