@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import user_logo from '../assets/user.png';
 import email_logo from '../assets/email.png';
@@ -7,7 +7,38 @@ import password_logo from '../assets/password.png';
 
 function SignInPage() {
   
-  const [action, setAction] = useState("Sign Up");
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = async () => {
+    setError('');
+
+    if (!email || !password) {
+      return setError('Email and password are required.');
+    }
+
+    try {
+      const res = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return setError(data.error || 'Login failed.');
+      }
+
+      localStorage.setItem('token', data.token);
+      navigate('/'); // redirect to home after login
+    } 
+    catch (err) {
+      setError('Could not connect to server.');
+    }
+  };
 
   return (
     <div>
@@ -19,35 +50,33 @@ function SignInPage() {
                     <button className="button-snap">←</button>
                   </Link>
                   <div>
-                    <h1>{action}</h1>
+                    <h1>Login</h1>
                     <p>Use your log in credentials to access your account</p>
                   </div>
                 </div>
+
               <div className="inputs">
-                {action==="Login"?<div></div>:<div className="input">
-                  <img src={user_logo} alt="" style={{ height:20, width:20}} />
-                  <input type="name" placeholder="Name"/>
-                </div>}
-          
                 <div className="input">
                   <img src={email_logo} alt="" style={{ height:20, width:20}} />
-                  <input type="email" placeholder="Email"/>
+                  <input type="email" placeholder="Email"
+                    value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="input">
                   <img src={password_logo} alt="" style={{ height:20, width:20}} />
-                  <input type="password" placeholder="Password"/>
+                  <input type="password" placeholder="Password"
+                    value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
               </div>
               <div className="submit-container">
-                <div className={action=="Login"?"submit gray":"submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</div>
-                <div className={action=="Sign Up"?"submit gray":"submit"} onClick={()=>{setAction("Login")}}>Login</div>
+                <div className="submit" onClick={handleLogin}>Login</div>
+                <Link to="/register">
+                  <div className="submit gray">Create Account</div>
+                </Link>
+              </div>
               </div>
             </div>
         </div>
       </div>
-
-
-    </div>
   );
   
 }
