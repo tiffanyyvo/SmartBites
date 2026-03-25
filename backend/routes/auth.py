@@ -32,6 +32,9 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
+    if not email or not password:
+        return jsonify({"error": "Email and password required"}), 400
+
     user = get_user_by_email(email)
     
     if not user or not verify_password(password, user['password']):
@@ -39,15 +42,6 @@ def login():
     
     token = create_access_token(identity=email)
     return jsonify({"token": token, "email": email}), 200
-
-# GET /auth/me
-# returns user's email
-@auth_bp.route('/me', methods=['GET'])
-@jwt_required()
-def me():
-    email = get_jwt_identity()
-    user = get_user_by_email(email)
-    return jsonify({"email": user['email']}), 200
 
 # GET /auth/me/profile
 # returns user's dietary restrictions and cuisine preferences
