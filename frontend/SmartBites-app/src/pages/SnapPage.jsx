@@ -3,6 +3,22 @@ import { Link } from 'react-router-dom';
 
 function SnapPage({ onAddRecipe }) {
   //need this to see if AI generated the recipie yet before page extends
+  //https://www.geeksforgeeks.org/reactjs/file-uploading-in-react-js/
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const onFileChange = (event) => {
+    // Store the first file from the selection
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const onFileUpload = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+  };
+
+
   const [recipeLoaded, setRecipeLoaded] = useState(false);
 
   const handleGenerateRecipe = () => {
@@ -73,11 +89,12 @@ function SnapPage({ onAddRecipe }) {
                 </div>
 
                 <div className="action-buttons">
-                  {/* snap triggers the AI */}
-                  <button className="btn-snap" onClick={handleGenerateRecipe}>
-                    ✓ Snap
-                  </button>
-                  <button className="btn-upload">Upload</button>
+                  {/* upload triggers the AI, snap should trigger the camera to pop up*/}
+                  <input type="file" onChange={onFileChange} />
+                  <button className="btn-snap">Snap</button>
+                  <button className="btn-upload" onClick={onFileUpload}>Upload</button>
+                  <button className="btn-submit" onClick={handleGenerateRecipe}>
+                    ✓ Submit</button>
                 </div>
               </div>
             ) : (

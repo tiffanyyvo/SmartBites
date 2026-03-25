@@ -346,6 +346,14 @@ button {
   font-size: 1rem;
 }
 
+.btn-submit {
+  background-color: #5d606b; /* Dark gray */
+  color: #ffffff;
+  border-radius: 25px;
+  padding: 12px 40px;
+  font-size: 1rem;
+}
+
 /*sign in stuff*/
 .white-card-signin {
   background-color: white;

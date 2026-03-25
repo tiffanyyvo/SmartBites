@@ -15,7 +15,7 @@ function ExplorePage() {
                   <nav>
                     <div className="nav-actions">
                       {/* sign in goes to snap for now, until sign in is implemented*/}
-                      <Link to="/sign-in">
+                      <Link to="/snap">
                           <button className="btn-signin">Make a Post</button>
                       </Link>
                     </div>
