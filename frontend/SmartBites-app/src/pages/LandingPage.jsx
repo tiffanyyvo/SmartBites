@@ -3,6 +3,14 @@ import SmartBitesLogo from '../assets/Smartbites_logo.png';
 import FridgeImage from "../assets/fridge_image.png";
 
 function LandingPage() {
+    //for scroll- so it doesnt snap right up
+    const scrollToTop = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      };
+
   return (
     <div className="landing-container">
       {/* top page bar */}
@@ -122,9 +130,9 @@ function LandingPage() {
             </ul>
           </div>
         </div>
-        <div className="footer-upload">
-          <span className="upload-icon">↑</span>
-        </div>
+        <div className="footer-upload" onClick={scrollToTop} style={{ cursor: 'pointer' }}>
+            <span className="upload-icon">↑</span>
+          </div>
       </footer>
     </div>
   );

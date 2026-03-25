@@ -1,13 +1,27 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function SnapPage() {
+function SnapPage({ onAddRecipe }) {
   //need this to see if AI generated the recipie yet before page extends
   const [recipeLoaded, setRecipeLoaded] = useState(false);
 
   const handleGenerateRecipe = () => {
   // think this is where AI API call will be
   //set to true temporarily
+
+    //fake recipe sample
+    const aiGeneratedRecipe = {
+      id: Date.now(),
+      title: 'AI Suggested Chicken Bowl',
+      updated: 'Just now',
+      ingredients: ['Chicken', 'Veggie']
+    };
+
+    //sends to app
+    if (onAddRecipe) {
+      onAddRecipe(aiGeneratedRecipe);
+    }
+
     setRecipeLoaded(true);
   };
 
@@ -67,7 +81,7 @@ function SnapPage() {
                 </div>
               </div>
             ) : (
-              /* Shown post AI */
+              /*post AI */
               <div className="card-content-wrapper">
                  <div className="card-header">
                   <span className="back-arrow" onClick={() => setRecipeLoaded(false)} style={{cursor: 'pointer'}}>←</span>
