@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import user_logo from '../assets/user.png';
+import email_logo from '../assets/email.png';
+import password_logo from '../assets/password.png';
+
 function RegisterPage() {
   
   const navigate = useNavigate();
@@ -57,10 +61,38 @@ function RegisterPage() {
                   </Link>
                   <div>
                     <h1>Register</h1>
-                    <p>Please fill in this form to create an account.</p>
+                    <p>Please fill in this form to create an account. When creating your password, 
+                      it must contain at least 8 characters, 1 uppercase, 1 lowercase, and a special number</p>
                     
                     {error && <p style={{ color: 'red' }}>{error}</p>}
 
+                    <div className="inputs">
+                      <div className="input">
+                        <img src={user_logo} alt="" style={{ height:20, width:20}} />
+                        <input type="name" placeholder="Name"
+                          value={formData.name} onChange={handleChange} required/>
+                      </div>
+                      
+                      <div className="input">
+                        <img src={email_logo} alt="" style={{ height:20, width:20}} />
+                        <input type="email" placeholder="Email"
+                          value={formData.email} onChange={handleChange} required/>
+                      </div>
+
+                      <div className="input">
+                        <img src={password_logo} alt="" style={{ height:20, width:20}} />
+                        <input type="password" placeholder="Password"
+                          value={formData.password} onChange={handleChange} required/>
+                      </div>
+
+                      <div className="input">
+                        <img src={password_logo} alt="" style={{ height:20, width:20}} />
+                        <input type="password" placeholder="Re-Password"
+                          value={formData.passwordRep} onChange={handleChange} required/>
+                      </div>
+                    </div>
+
+                    {/*
                     <p>
                       <label for="name"><b>Name: </b></label>
                       <input type="text" placeholder="Enter Name" name="name" id="name"
@@ -86,10 +118,6 @@ function RegisterPage() {
                     </p>
 
                     <p>
-                      Your Password must contain at least 8 characters, 1 uppercase, 1 lowercase, and a special number
-                    </p>
-
-                    <p>
                       <label for="password"><b>Password: </b></label>
                       <input type="password" placeholder="Enter Password" name="password" id="password"
                         value={formData.password} onChange={handleChange} required/>
@@ -99,7 +127,7 @@ function RegisterPage() {
                       <label for="passwordRep"><b>Re-Enter Password: </b></label>
                       <input type="password" placeholder="Re-Enter Password" name="passwordRep" id="passwordRep"
                         value={formData.passwordRep} onChange={handleChange} required/>
-                    </p>
+                    </p>*/}
 
                     <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
                   </div>
