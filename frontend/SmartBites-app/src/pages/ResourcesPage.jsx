@@ -11,6 +11,7 @@ function ResourcesPage() {
                   </Link>
                   <div>
                     <h1>Resources</h1>
+                    
                     <p>
                       <label for="API"><b>API: </b></label>
                       Link
