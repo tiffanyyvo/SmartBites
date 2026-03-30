@@ -8,6 +8,8 @@ import password_logo from '../assets/password.png';
 function RegisterPage() {
   
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [formData, setFormData] = useState({
     name: '', age: '', email: '', username: '', password: '', passwordRep: ''
   });
@@ -69,7 +71,7 @@ function RegisterPage() {
                     <div className="inputs">
                       <div className="input">
                         <img src={user_logo} alt="" style={{ height:20, width:20}} />
-                        <input type="name" placeholder="Name"
+                        <input type="text" placeholder="Name"
                           value={formData.name} onChange={handleChange} required/>
                       </div>
                       
