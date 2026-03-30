@@ -1,13 +1,55 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-function SnapPage() {
+function SnapPage({ onAddRecipe }) {
   //need this to see if AI generated the recipie yet before page extends
+  //https://www.geeksforgeeks.org/reactjs/file-uploading-in-react-js/
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+
+  const onFileChange = (event) => {
+    //store the first file from the selection
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const onFileUpload = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleSnapClick = () => {
+    cameraInputRef.current.click();
+  };
+
   const [recipeLoaded, setRecipeLoaded] = useState(false);
 
   const handleGenerateRecipe = () => {
   // think this is where AI API call will be
   //set to true temporarily
+
+    //fake recipe sample
+    const aiGeneratedRecipe = {
+      id: Date.now(),
+      title: 'AI Suggested Chicken Bowl',
+      updated: 'Just now',
+      ingredients: ['Chicken', 'Veggie']
+    };
+
+    //sends to app
+    if (onAddRecipe) {
+      onAddRecipe(aiGeneratedRecipe);
+    }
+
     setRecipeLoaded(true);
   };
 
@@ -44,7 +86,9 @@ function SnapPage() {
               /* pre AI generation */
               <div className="card-content-wrapper">
                 <div className="card-header">
-                  <span className="back-arrow">←</span>
+                  <Link to="/">
+                    <button className="button-snap">←</button>
+                  </Link>
                   <div>
                     <h1>Snap</h1>
                     <p>Snap a photo of your fridge</p>
@@ -53,19 +97,41 @@ function SnapPage() {
 
                 <div className="camera-display-area">
                   <div className="placeholder-graphic">
+                    {selectedFile ? (
+                      <p>Selected: {selectedFile.name}</p>
+                    ) : (
+                      <p>No image selected</p>
+                    )}
                   </div>
                 </div>
 
                 <div className="action-buttons">
-                  {/* snap triggers the AI */}
-                  <button className="btn-snap" onClick={handleGenerateRecipe}>
-                    ✓ Snap
-                  </button>
-                  <button className="btn-upload">Upload</button>
+                  {/* upload triggers the AI, snap should trigger the camera to pop up*/}
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={onFileChange}
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={onFileChange}
+                    ref={cameraInputRef}
+                    style={{ display: 'none' }}
+                  />
+
+                  <button className="btn-snap" onClick={handleSnapClick}>Snap</button>
+                  <button className="btn-upload" onClick={handleUploadClick}>Upload</button>
+                  <button className="btn-submit" onClick={handleGenerateRecipe}>
+                    ✓ Submit</button>
                 </div>
               </div>
             ) : (
-              /* Shown post AI */
+              /*post AI */
               <div className="card-content-wrapper">
                  <div className="card-header">
                   <span className="back-arrow" onClick={() => setRecipeLoaded(false)} style={{cursor: 'pointer'}}>←</span>
@@ -78,7 +144,10 @@ function SnapPage() {
                   <p>Recipe details will map out here...</p>
                 </div>
                 <div className="action-buttons">
-                  <button className="btn-snap" onClick={() => setRecipeLoaded(false)}>Snap Another Photo</button>
+                  <button className="btn-snap" onClick={() => {
+                    setRecipeLoaded(false);
+                    setSelectedFile(null);
+                  }}>Snap Another Photo</button>
                 </div>
               </div>
             )}
