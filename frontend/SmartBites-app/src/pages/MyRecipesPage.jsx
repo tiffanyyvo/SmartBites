@@ -1,12 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-function MyRecipesPage({ recipes = [] }) {
+function MyRecipesPage() {
+
+  //need a state for recipes, loading and errors
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
   const [activeFilter, setActiveFilter] = useState('All');
-  //can change these eventually
   const filters = ['All', 'Chicken', 'Tofu', 'Salmon', 'Beef', 'Veggie'];
 
-  //filter recipes
+  //uses effect!
+  useEffect(() => {
+    const fetchMyRecipes = async () => {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        setError('Please sign in to view your recipes.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:5000/api/my-recipes', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setRecipes(data); //gets the saved data
+        } else {
+          setError(data.error || 'Failed to fetch recipes.');
+        }
+      } catch (err) {
+        setError('Could not connect to the server.');
+      } finally {
+        setLoading(false); //stop loading state
+      }
+    };
+
+    fetchMyRecipes();
+  }, []); //make sure page loads first
+
+  //includes fetched state now!
   const displayedRecipes = recipes.filter((recipe) => {
     if (activeFilter === 'All') return true;
     return recipe.ingredients && recipe.ingredients.includes(activeFilter);
@@ -82,8 +123,16 @@ function MyRecipesPage({ recipes = [] }) {
               ))}
             </div>
 
-            {/* recipe area */}
-            {displayedRecipes.length === 0 ? (
+            {/* if not signed in */}
+            {loading ? (
+              <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                <h3>Loading your recipes...</h3>
+              </div>
+            ) : error ? (
+               <div style={{ textAlign: 'center', marginTop: '50px', color: 'red' }}>
+                <h3>{error}</h3>
+              </div>
+            ) : displayedRecipes.length === 0 ? (
               <div style={{ textAlign: 'center', marginTop: '50px', color: '#666' }}>
                 <h3>No recipes found.</h3>
                 <p>Go to the Snap page to generate some!</p>
@@ -94,7 +143,7 @@ function MyRecipesPage({ recipes = [] }) {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
                 gap: '24px',
                 overflowY: 'auto',
-                paddingRight: '10px' //scrollbar
+                paddingRight: '10px'
               }}>
                 {displayedRecipes.map((recipe) => (
                   <div key={recipe.id} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

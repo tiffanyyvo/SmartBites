@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 function SnapPage({ onAddRecipe }) {
@@ -6,9 +6,14 @@ function SnapPage({ onAddRecipe }) {
   //https://www.geeksforgeeks.org/reactjs/file-uploading-in-react-js/
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const fileInputRef = useRef(null);
+  const cameraInputRef = useRef(null);
+
   const onFileChange = (event) => {
-    // Store the first file from the selection
-    setSelectedFile(event.target.files[0]);
+    //store the first file from the selection
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
   };
 
   const onFileUpload = async () => {
@@ -18,6 +23,13 @@ function SnapPage({ onAddRecipe }) {
     formData.append("file", selectedFile);
   };
 
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleSnapClick = () => {
+    cameraInputRef.current.click();
+  };
 
   const [recipeLoaded, setRecipeLoaded] = useState(false);
 
@@ -85,14 +97,35 @@ function SnapPage({ onAddRecipe }) {
 
                 <div className="camera-display-area">
                   <div className="placeholder-graphic">
+                    {selectedFile ? (
+                      <p>Selected: {selectedFile.name}</p>
+                    ) : (
+                      <p>No image selected</p>
+                    )}
                   </div>
                 </div>
 
                 <div className="action-buttons">
                   {/* upload triggers the AI, snap should trigger the camera to pop up*/}
-                  <input type="file" onChange={onFileChange} />
-                  <button className="btn-snap">Snap</button>
-                  <button className="btn-upload" onClick={onFileUpload}>Upload</button>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={onFileChange}
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={onFileChange}
+                    ref={cameraInputRef}
+                    style={{ display: 'none' }}
+                  />
+
+                  <button className="btn-snap" onClick={handleSnapClick}>Snap</button>
+                  <button className="btn-upload" onClick={handleUploadClick}>Upload</button>
                   <button className="btn-submit" onClick={handleGenerateRecipe}>
                     ✓ Submit</button>
                 </div>
@@ -111,7 +144,10 @@ function SnapPage({ onAddRecipe }) {
                   <p>Recipe details will map out here...</p>
                 </div>
                 <div className="action-buttons">
-                  <button className="btn-snap" onClick={() => setRecipeLoaded(false)}>Snap Another Photo</button>
+                  <button className="btn-snap" onClick={() => {
+                    setRecipeLoaded(false);
+                    setSelectedFile(null);
+                  }}>Snap Another Photo</button>
                 </div>
               </div>
             )}
