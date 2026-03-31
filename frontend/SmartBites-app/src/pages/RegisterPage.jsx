@@ -71,25 +71,25 @@ function RegisterPage() {
                     <div className="inputs">
                       <div className="input">
                         <img src={user_logo} alt="" style={{ height:20, width:20}} />
-                        <input type="text" placeholder="Name"
+                        <input type="text" placeholder="Name" name="name"
                           value={formData.name} onChange={handleChange} required/>
                       </div>
                       
                       <div className="input">
                         <img src={email_logo} alt="" style={{ height:20, width:20}} />
-                        <input type="email" placeholder="Email"
+                        <input type="email" placeholder="Email" name="email"
                           value={formData.email} onChange={handleChange} required/>
                       </div>
 
                       <div className="input">
                         <img src={password_logo} alt="" style={{ height:20, width:20}} />
-                        <input type="password" placeholder="Password"
+                        <input type="password" placeholder="Password" name="password"
                           value={formData.password} onChange={handleChange} required/>
                       </div>
 
                       <div className="input">
                         <img src={password_logo} alt="" style={{ height:20, width:20}} />
-                        <input type="password" placeholder="Re-Password"
+                        <input type="password" placeholder="Re-Password" name="passwordRep"
                           value={formData.passwordRep} onChange={handleChange} required/>
                       </div>
                     </div>
