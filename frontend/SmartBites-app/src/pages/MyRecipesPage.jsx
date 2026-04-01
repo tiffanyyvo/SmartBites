@@ -23,7 +23,7 @@ function MyRecipesPage() {
       }
 
       try {
-        const res = await fetch('http://localhost:5000/api/my-recipes', {
+        const res = await fetch('http://localhost:5001/api/my-recipes', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
