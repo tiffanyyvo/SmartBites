@@ -13,7 +13,7 @@ function ProfilePage() {
       }
 
       try {
-        const res = await fetch('http://localhost:5000/api/profile', {
+        const res = await fetch('http://localhost:5001/api/profile', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
