@@ -35,7 +35,8 @@ function ProfilePage() {
     <div className="profile-container">
       <h1>My Profile</h1>
       <p>Email: {profile.email}</p>
-      {/* do we need any more componenets?? */}
+      <p>My Recipes: </p>
+      {/* do we need any more componenets?? - need name, and the saved recipes */}
     </div>
   );
 }

@@ -4,6 +4,9 @@ import FridgeImage from "../assets/fridge_image.png";
 
 function LandingPage() {
     //for scroll- so it doesnt snap right up
+
+    const [loggedIn, setLoggedIn] = useState(false);
+
     const scrollToTop = () => {
         window.scrollTo({
           top: 0,
@@ -26,9 +29,16 @@ function LandingPage() {
         </ul>
         <div className="nav-actions">
             {/* sign in goes to snap for now, until sign in is implemented*/}
+            {!loggedIn ? (
             <Link to="/sign-in">
                 <button className="btn-signin">Login/Register</button>
             </Link>
+            ) : (
+            <Link to="/profile">
+              {/* will need to add functionality to check if logged in*/}
+                <button className="btn-signin">Profile</button>
+            </Link>
+            )}
         </div>
       </nav>
 

@@ -8,6 +8,7 @@ import ContactPage from './pages/ContactPage';
 import ResourcesPage from './pages/ResourcesPage';
 import RegisterPage from './pages/RegisterPage';
 import SignInPage from './pages/SignInPage';
+import ProfilePage from './pages/Profile';
 import './App.css';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Route path="/resources" element={<ResourcesPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/sign-in" element={<SignInPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 }
