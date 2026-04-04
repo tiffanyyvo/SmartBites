@@ -7,18 +7,22 @@ import password_logo from '../assets/password.png';
 import question_logo from '../assets/question.png';
 
 function ContactPage() {
+  
+  const[submitted, setSubmitted] = useState(false);
+
   return (
     <div className="snap-main-area">
           <div className="white-card">
               <div className="card-content-wrapper">
                 <div className="card-header">
                   <Link to="/">
-                    <button className="button-snap">←</button>
+                    <button className="button-snap" onClick={() => setSubmitted(true)}>←</button>
                   </Link>
                   <div>
                     <h1>Contact</h1>
                     <p>Fill out the information below so we can help answer any questions or queries that you may have!</p>
                     
+                    {!submitted ? (
                     <div className="inputs">
                         <div className="input">
                           <img src={user_logo} alt="" style={{ height:20, width:20}} />
@@ -36,11 +40,16 @@ function ContactPage() {
                         </div>
 
                         <div className="submit-container">
-                          <Link to="/register"> {/* we need to have a thank you screen*/}
-                            <div className="submit">Submit Question</div>
-                          </Link>
+                          <button className="submit" onClick={() => setSubmitted(true)}>Submit Question</button>
                         </div>
                     </div>
+                    ) : (
+
+                      <div className="card-header">
+                        <h2> Thank you! </h2>
+                          <button className="submit" onClick={() => setSubmitted(false)}>Submit Another Question</button>
+                        </div>
+                    )}
                   </div>
                 </div>
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function ProfilePage() {
   const [profile, setProfile] = useState(null);
@@ -28,7 +29,15 @@ function ProfilePage() {
     fetchProfile();
   }, []);
 
-  if (error) return <div>{error}</div>;
+  if (error) return <div className="snap-main-area"><div className="white-card"><div className="card-content-wrapper"><div className="card-header">
+    <Link to="/">
+    <button className="button-snap">←</button>
+    </Link>
+    <h2>{error}</h2>
+    <Link to="/register">
+    <button className="button-snap">Create Profile</button>
+    </Link>
+    </div></div></div></div>;
   if (!profile) return <div>Loading...</div>;
 
   return (
