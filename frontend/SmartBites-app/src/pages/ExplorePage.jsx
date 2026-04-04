@@ -22,7 +22,7 @@ function ExplorePage() {
                   </nav>
 
                   <div>
-                    <h1>Explore Other Users Recipes</h1>
+                    <h1>Eplore Other Users Recipes</h1>
                   </div>
                   
                 </div>
