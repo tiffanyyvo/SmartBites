@@ -46,6 +46,7 @@ function RegisterPage() {
       }
 
       localStorage.setItem('token', data.token);
+      localStorage.setItem('email', data.email);
       navigate('/');
     } 
     catch (err) {

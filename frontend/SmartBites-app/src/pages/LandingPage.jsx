@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SmartBitesLogo from '../assets/Smartbites_logo.png';
 import FridgeImage from "../assets/fridge_image.png";
 
@@ -7,6 +7,16 @@ function LandingPage() {
     //for scroll- so it doesnt snap right up
 
     const [loggedIn, setLoggedIn] = useState(false);
+    const [userName, setUserName] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const email = localStorage.getItem('email');
+        if (token && email) {
+            setLoggedIn(true);
+            setUserName(email.split('@')[0]); // uses part before @ as name
+        }
+    }, []);
 
     const scrollToTop = () => {
         window.scrollTo({
@@ -31,13 +41,13 @@ function LandingPage() {
         <div className="nav-actions">
             {/* sign in goes to snap for now, until sign in is implemented*/}
             {!loggedIn ? (
-            <Link to="/sign-in">
-                <button className="btn-signin">Login/Register</button>
-            </Link>
+              <Link to="/sign-in">
+                  <button className="btn-signin">Login/Register</button>
+              </Link>
             ) : (
             <Link to="/profile">
               {/* will need to add functionality to check if logged in*/}
-                <button className="btn-signin">Profile</button>
+                <button className="btn-signin">Hi, {userName}!</button>
             </Link>
             )}
         </div>
@@ -48,9 +58,15 @@ function LandingPage() {
         <h1>SmartBites</h1>
         <h2>Snap. Scan. Savor.</h2>
         <div className="title-actions">
+          {!loggedIn ? (
             <Link to ="/sign-in">
                 <button className="btn-signin">Login/Register</button>
-          </Link>
+            </Link>
+          ) : (
+            <Link to ="/profile">
+                <button className="btn-signin">Hi, {userName}!</button>
+            </Link>
+          )}
         </div>
       </header>
 
