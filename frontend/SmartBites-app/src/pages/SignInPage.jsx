@@ -33,6 +33,7 @@ function SignInPage() {
       }
 
       localStorage.setItem('token', data.token);
+      localStorage.setItem('email', data.email);
       navigate('/'); // redirect to home after login
     } 
     catch (err) {
