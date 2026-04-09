@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 function SnapPage({ onAddRecipe }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [recipeLoaded, setRecipeLoaded] = useState(false);
-  
-  // ADD THESE TWO NEW STATE VARIABLES:
+  const [isGenerating, setIsGenerating] = useState(false);
+
   const [detectedIngredients, setDetectedIngredients] = useState([]);
   const [generatedRecipes, setGeneratedRecipes] = useState([]);
 
@@ -26,12 +26,13 @@ function SnapPage({ onAddRecipe }) {
     cameraInputRef.current.click();
   };
 
-  // REPLACE THIS ENTIRE FUNCTION:
   const handleGenerateRecipe = async () => {
     if (!selectedFile) {
       alert('Please select an image first!');
       return;
     }
+
+    setIsGenerating(true);
 
     try {
       // Step 1: Analyze the fridge image
@@ -44,14 +45,14 @@ function SnapPage({ onAddRecipe }) {
       });
 
       const ingredientsData = await analyzeResponse.json();
-      console.log('Detected ingredients:', ingredientsData);
 
       if (!ingredientsData.ingredients || ingredientsData.error) {
         alert('Failed to detect ingredients: ' + (ingredientsData.error || 'Unknown error'));
+        setIsGenerating(false);
         return;
       }
 
-      // Step 2: Generate recipes using the detected ingredients
+      // Step 2: Generate recipes
       const recipeResponse = await fetch('http://localhost:5001/generate-recipe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -63,23 +64,11 @@ function SnapPage({ onAddRecipe }) {
       });
 
       const recipeData = await recipeResponse.json();
-      console.log('Generated recipes:', recipeData);
 
       if (recipeData.recipes && recipeData.recipes.length > 0) {
-        // Store the recipes and ingredients to display
         setDetectedIngredients(ingredientsData.ingredients);
         setGeneratedRecipes(recipeData.recipes);
         setRecipeLoaded(true);
-        
-        // Optional: Send first recipe to "My Recipes"
-        if (onAddRecipe && recipeData.recipes[0]) {
-          onAddRecipe({
-            id: Date.now(),
-            title: recipeData.recipes[0].name,
-            updated: 'Just now',
-            ingredients: ingredientsData.ingredients
-          });
-        }
       } else {
         alert('Failed to generate recipes: ' + (recipeData.error || 'Unknown error'));
       }
@@ -87,6 +76,8 @@ function SnapPage({ onAddRecipe }) {
     } catch (error) {
       console.error('Error:', error);
       alert('Failed to process image: ' + error.message);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -132,12 +123,26 @@ function SnapPage({ onAddRecipe }) {
                 </div>
               </div>
 
-              <div className="camera-display-area">
-                <div className="placeholder-graphic">
+              {/* UPDATED CAMERA DISPLAY AREA FOR IMAGE PREVIEW */}
+              <div className="camera-display-area" style={{
+                minHeight: '250px',
+                backgroundColor: '#f0eff3',
+                borderRadius: '16px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+                marginBottom: '20px'
+              }}>
+                <div className="placeholder-graphic" style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   {selectedFile ? (
-                    <p>Selected: {selectedFile.name}</p>
+                    <img
+                      src={URL.createObjectURL(selectedFile)}
+                      alt="Fridge preview"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
                   ) : (
-                    <p>No image selected</p>
+                    <p style={{ color: '#666' }}>No image selected</p>
                   )}
                 </div>
               </div>
@@ -159,14 +164,15 @@ function SnapPage({ onAddRecipe }) {
                   style={{ display: 'none' }}
                 />
 
-                <button className="btn-snap" onClick={handleSnapClick}>Snap</button>
-                <button className="btn-upload" onClick={handleUploadClick}>Upload</button>
-                <button className="btn-submit" onClick={handleGenerateRecipe}>
-                  ✓ Submit</button>
+                <button className="btn-snap" onClick={handleSnapClick} disabled={isGenerating}>Snap</button>
+                <button className="btn-upload" onClick={handleUploadClick} disabled={isGenerating}>Upload</button>
+                <button className="btn-submit" onClick={handleGenerateRecipe} disabled={isGenerating}>
+                  {isGenerating ? 'Analyzing...' : '✓ Submit'}
+                </button>
               </div>
             </div>
           ) : (
-            /* post AI - REPLACED SECTION */
+            /* post AI */
             <div className="card-content-wrapper">
               <div className="card-header">
                 <span className="back-arrow" onClick={() => {
@@ -174,7 +180,7 @@ function SnapPage({ onAddRecipe }) {
                   setSelectedFile(null);
                   setDetectedIngredients([]);
                   setGeneratedRecipes([]);
-                }} style={{cursor: 'pointer'}}>←</span>
+                }} style={{cursor: 'pointer', fontSize: '24px', marginRight: '15px'}}>←</span>
                 <div>
                   <h1>Suggested Recipes</h1>
                   <p>Here are recipes based on your fridge!</p>
@@ -182,15 +188,22 @@ function SnapPage({ onAddRecipe }) {
               </div>
 
               {/* Show detected ingredients */}
-              <div style={{ marginBottom: '20px', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
-                <h3>Detected Ingredients:</h3>
+              <div className="ingredients-container" style={{
+                marginBottom: '20px',
+                padding: '15px 20px',
+                backgroundColor: '#f8f9fa',
+                borderRadius: '12px'
+              }}>
+                <h3 style={{ margin: '0 0 10px 0', fontSize: '1.1rem' }}>Detected Ingredients:</h3>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {detectedIngredients.map((ingredient, idx) => (
-                    <span key={idx} style={{ 
-                      padding: '5px 12px', 
-                      backgroundColor: '#a4e5aa', 
-                      borderRadius: '15px',
-                      fontSize: '14px'
+                    <span key={idx} style={{
+                      padding: '6px 14px',
+                      backgroundColor: '#e6f4ea',
+                      color: '#137333',
+                      borderRadius: '20px',
+                      fontSize: '0.9rem',
+                      fontWeight: '500'
                     }}>
                       {ingredient}
                     </span>
@@ -199,40 +212,120 @@ function SnapPage({ onAddRecipe }) {
               </div>
 
               {/* Show generated recipes */}
-              <div className="recipe-content-area" style={{ 
-                overflow: 'auto', 
-                padding: '20px',
-                backgroundColor: 'white' 
+              <div className="recipe-cards-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                gap: '20px',
+                padding: '5px'
               }}>
                 {generatedRecipes.map((recipe, idx) => (
-                  <div key={idx} style={{ 
-                    marginBottom: '30px', 
-                    padding: '20px', 
-                    border: '2px solid #e0e0e0',
-                    borderRadius: '12px'
+                  <div key={idx} className="recipe-card" style={{
+                    padding: '20px',
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '16px',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+                    display: 'flex',
+                    flexDirection: 'column'
                   }}>
-                    <h2>{recipe.name}</h2>
-                    <p><strong>Prep:</strong> {recipe.prep_time} | <strong>Cook:</strong> {recipe.cook_time}</p>
-                    
-                    <h3>Ingredients:</h3>
-                    <ul>
+                    <h2 style={{
+                      marginTop: '0',
+                      fontSize: '1.5rem',
+                      color: '#202124',
+                      lineHeight: '1.2'
+                    }}>
+                      {recipe.name}
+                    </h2>
+
+                    <div style={{
+                      display: 'flex',
+                      gap: '15px',
+                      marginBottom: '15px',
+                      fontSize: '0.9rem',
+                      color: '#5f6368'
+                    }}>
+                      <span><strong>Prep:</strong> {recipe.prep_time}</span>
+                      <span><strong>Cook:</strong> {recipe.cook_time}</span>
+                    </div>
+
+                    <h3 style={{ fontSize: '1.1rem', marginBottom: '8px', color: '#202124' }}>Ingredients:</h3>
+                    <ul style={{
+                      paddingLeft: '20px',
+                      margin: '0 0 15px 0',
+                      fontSize: '0.95rem',
+                      color: '#4a4a4a'
+                    }}>
                       {recipe.ingredients.map((ing, i) => (
-                        <li key={i}>{ing}</li>
+                        <li key={i} style={{ marginBottom: '4px' }}>{ing}</li>
                       ))}
                     </ul>
-                    
-                    <h3>Instructions:</h3>
-                    <ol>
+
+                    <h3 style={{ fontSize: '1.1rem', marginBottom: '8px', color: '#202124' }}>Instructions:</h3>
+                    <ol style={{
+                      paddingLeft: '20px',
+                      margin: '0',
+                      fontSize: '0.95rem',
+                      color: '#4a4a4a',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '8px',
+                      flexGrow: 1
+                    }}>
                       {recipe.instructions.map((step, i) => (
                         <li key={i}>{step}</li>
                       ))}
                     </ol>
+
+                    <button
+                      style={{
+                        marginTop: '20px',
+                        padding: '10px',
+                        backgroundColor: '#e6f4ea',
+                        color: '#137333',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        transition: 'background-color 0.2s'
+                      }}
+                      onClick={(e) => {
+                        if (onAddRecipe) {
+                          onAddRecipe({
+                            id: Date.now() + idx,
+                            title: recipe.name,
+                            updated: new Date().toLocaleDateString(),
+                            ingredients: recipe.ingredients,
+                            instructions: recipe.instructions,
+                            prep_time: recipe.prep_time,
+                            cook_time: recipe.cook_time
+                          });
+                          e.target.innerText = '✓ Saved to My Recipes';
+                          e.target.style.backgroundColor = '#dcece0';
+                          e.target.disabled = true;
+                        }
+                      }}
+                    >
+                      Save Recipe
+                    </button>
                   </div>
                 ))}
               </div>
 
-              <div className="action-buttons">
-                <button className="btn-snap" onClick={() => {
+              <div className="action-buttons" style={{
+                marginTop: '30px',
+                paddingBottom: '20px',
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+                <button className="btn-snap" style={{
+                  backgroundColor: '#5f6368',
+                  color: 'white',
+                  padding: '12px 24px',
+                  borderRadius: '25px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: '600'
+                }} onClick={() => {
                   setRecipeLoaded(false);
                   setSelectedFile(null);
                   setDetectedIngredients([]);
