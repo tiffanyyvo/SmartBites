@@ -1,57 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function MyRecipesPage() {
+function MyRecipesPage({ recipes = [] }) {
 
   //need a state for recipes, loading and errors
-  const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
   const [activeFilter, setActiveFilter] = useState('All');
+  const [expandedRecipeId, setExpandedRecipeId] = useState(null);
   const filters = ['All', 'Chicken', 'Tofu', 'Salmon', 'Beef', 'Veggie'];
 
   //uses effect!
-  useEffect(() => {
-    const fetchMyRecipes = async () => {
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        setError('Please sign in to view your recipes.');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const res = await fetch('http://localhost:5001/api/my-recipes', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          setRecipes(data); //gets the saved data
-        } else {
-          setError(data.error || 'Failed to fetch recipes.');
-        }
-      } catch (err) {
-        setError('Could not connect to the server.');
-      } finally {
-        setLoading(false); //stop loading state
-      }
-    };
-
-    fetchMyRecipes();
-  }, []); //make sure page loads first
 
   //includes fetched state now!
-  const displayedRecipes = recipes.filter((recipe) => {
-    if (activeFilter === 'All') return true;
-    return recipe.ingredients && recipe.ingredients.includes(activeFilter);
-  });
+    const displayedRecipes = recipes.filter((recipe) => {
+      if (activeFilter === 'All') return true;
+
+      const filterTerm = activeFilter.toLowerCase();
+
+      //everything not protein
+      if (filterTerm === 'veggie') {
+        const meatFilters = ['chicken', 'tofu', 'salmon', 'beef'];
+        //check for filters
+        const hasMeatOrTofu = recipe.ingredients?.some(ing =>
+          meatFilters.some(meat => ing.toLowerCase().includes(meat))
+        ) || meatFilters.some(meat => recipe.title.toLowerCase().includes(meat));
+
+        return !hasMeatOrTofu;
+      }
+
+      //return
+      return (
+        (recipe.ingredients && recipe.ingredients.some(ing => ing.toLowerCase().includes(filterTerm))) ||
+        (recipe.title && recipe.title.toLowerCase().includes(filterTerm))
+      );
+    });
 
   return (
     <div className="snap-layout">
@@ -124,54 +105,77 @@ function MyRecipesPage() {
             </div>
 
             {/* if not signed in */}
-            {loading ? (
-              <div style={{ textAlign: 'center', marginTop: '50px' }}>
-                <h3>Loading your recipes...</h3>
-              </div>
-            ) : error ? (
-               <div style={{ textAlign: 'center', marginTop: '50px', color: 'red' }}>
-                <h3>{error}</h3>
-              </div>
-            ) : displayedRecipes.length === 0 ? (
+            {displayedRecipes.length === 0 ? (
               <div style={{ textAlign: 'center', marginTop: '50px', color: '#666' }}>
                 <h3>No recipes found.</h3>
                 <p>Go to the Snap page to generate some!</p>
               </div>
             ) : (
               <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-                gap: '24px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '15px',
                 overflowY: 'auto',
                 paddingRight: '10px'
               }}>
                 {displayedRecipes.map((recipe) => (
-                  <div key={recipe.id} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
-                    {/* where the image will go */}
-                    <div style={{
-                      backgroundColor: '#f0eff3',
+                  <div
+                    key={recipe.id}
+                    style={{
+                      backgroundColor: '#f8f9fa',
                       borderRadius: '16px',
-                      aspectRatio: '1 / 1',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}>
-                      <div style={{ fontSize: '24px', color: '#ccc', display: 'flex', gap: '5px' }}>
+                      padding: '20px',
+                      border: '1px solid #e0e0e0',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onClick={() => setExpandedRecipeId(expandedRecipeId === recipe.id ? null : recipe.id)}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        {/* where the image will go */}
+                        {/* card Text */}
+                        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: '#1a1a1a' }}>{recipe.title}</h3>
+                        <p style={{ margin: '5px 0 0 0', fontSize: '14px', color: '#666' }}>Saved on {recipe.updated}</p>
+                      </div>
+                      <div style={{ fontSize: '20px', color: '#666' }}>
+                        {expandedRecipeId === recipe.id ? '▲' : '▼'}
                       </div>
                     </div>
 
-                    {/* card Text */}
-                    <div>
-                      <h3 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: '#1a1a1a' }}>{recipe.title}</h3>
-                      <p style={{ margin: 0, fontSize: '12px', color: '#666' }}>Updated {recipe.updated}</p>
-                    </div>
+                    {expandedRecipeId === recipe.id && (
+                      <div style={{
+                        marginTop: '20px',
+                        paddingTop: '20px',
+                        borderTop: '1px solid #e0e0e0',
+                        cursor: 'default'
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                      >
+                        <div style={{ display: 'flex', gap: '15px', marginBottom: '15px', fontSize: '0.9rem', color: '#5f6368' }}>
+                          <span><strong>Prep:</strong> {recipe.prep_time}</span>
+                          <span><strong>Cook:</strong> {recipe.cook_time}</span>
+                        </div>
 
+                        <h4 style={{ fontSize: '1.1rem', marginBottom: '8px', color: '#202124' }}>Ingredients:</h4>
+                        <ul style={{ paddingLeft: '20px', margin: '0 0 15px 0', fontSize: '0.95rem', color: '#4a4a4a' }}>
+                          {recipe.ingredients.map((ing, i) => (
+                            <li key={i} style={{ marginBottom: '4px' }}>{ing}</li>
+                          ))}
+                        </ul>
+
+                        <h4 style={{ fontSize: '1.1rem', marginBottom: '8px', color: '#202124' }}>Instructions:</h4>
+                        <ol style={{ paddingLeft: '20px', margin: '0', fontSize: '0.95rem', color: '#4a4a4a', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                          {recipe.instructions.map((step, i) => (
+                            <li key={i}>{step}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             )}
-
           </div>
         </div>
       </div>
