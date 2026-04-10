@@ -312,10 +312,46 @@ button {
   background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
   border-radius: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
   position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid black;
+}
+
+.feed-posts{
+  flex: 1; /* buttons scroll to bottom of page */
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  height: auto;
+  justify-content: left;
+  align-items: left;
+  border: 1px solid black;
+}
+
+.feed-photo{
+  flex: 1; /* buttons scroll to bottom of page */
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  height: auto;
+  justify-content: right;
+  align-items: right;
+  border: 1px solid black;
+}
+
+.info{
+  background: white;
+  font-size: 1rem;
+  margin-left: 14px;
+  margin-right: 14px;
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
 }
 
 .huge-icon {

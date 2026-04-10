@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import SmartBitesLogo from '../assets/Smartbites_logo.png';
 
 function ExplorePage() {
   
@@ -28,8 +29,40 @@ function ExplorePage() {
                 </div>
 
                 <div className="camera-display-area">
-                <div className="placeholder-graphic">
+                  {/*this is where we will have some or no posts populated and then they 
+                  will be updated and displayed whenever the user clicks on this area */}
+                  <div className="feed-posts">
+                    <div className="info">
+                      <h1> Spaghetti Bolognese</h1>
+                      <h2> Duration: 2 hours</h2>
+                      <h2> spaghetti</h2>
+                    </div>
+                    <div className="feed-photos">
+                      <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" />
+                    </div>
+                  </div>
+                <div className="feed-posts">
+                    <div className="info">
+                      <h1> Spaghetti Bolognese</h1>
+                      <h2> Duration: 2 hours</h2>
+                      <h2> spaghetti</h2>
+                    </div>
                 </div>
+                <div className="feed-posts">
+                    <div className="info">
+                      <h1> Spaghetti Bolognese</h1>
+                      <h2> Duration: 2 hours</h2>
+                      <h2> spaghetti</h2>
+                    </div>
+                </div>
+                <div className="feed-posts">
+                    <div className="info">
+                      <h1> Spaghetti Bolognese</h1>
+                      <h2> Duration: 2 hours</h2>
+                      <h2> spaghetti</h2>
+                    </div>
+                </div>
+                
                 </div>
               </div>
       </div>

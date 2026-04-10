@@ -141,7 +141,9 @@ function RegisterPage() {
             <button className="btn-snap" onClick={handleRegister}>
               ✓ Create Account
             </button>
-            <button className="btn-upload">Cancel</button>
+            <Link to="/">
+                  <button className="btn-upload">Cancel</button>
+              </Link>
           </div>
         </div>
       </div>
