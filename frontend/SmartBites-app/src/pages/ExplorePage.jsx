@@ -28,41 +28,32 @@ function ExplorePage() {
                   
                 </div>
 
-                <div className="camera-display-area">
+                <div className="recipe-grid">
                   {/*this is where we will have some or no posts populated and then they 
                   will be updated and displayed whenever the user clicks on this area */}
-                  <div className="feed-posts">
-                    <div className="info">
+                  <div className="feed-card">
                       <h1> Spaghetti Bolognese</h1>
-                      <h2> Duration: 2 hours</h2>
-                      <h2> spaghetti</h2>
-                    </div>
-                    <div className="feed-photos">
-                      <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" />
-                    </div>
+                      <h4> By: Savannah Ogletree</h4>
+                      <h2> Super easy Spaghetti recipe and I wanted to share!</h2>
+                      <div className="image-placeholder">
+                        <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" />
+                      </div>
+                      {/* needs to be updated to find the recipe that is being talked about in the post*/}
+                      <Link to="/my-recipes">
+                          <button className="btn-signin">View Recipe</button>
+                      </Link>
                   </div>
-                <div className="feed-posts">
-                    <div className="info">
+                  <div className="feed-card">
                       <h1> Spaghetti Bolognese</h1>
-                      <h2> Duration: 2 hours</h2>
-                      <h2> spaghetti</h2>
-                    </div>
-                </div>
-                <div className="feed-posts">
-                    <div className="info">
-                      <h1> Spaghetti Bolognese</h1>
-                      <h2> Duration: 2 hours</h2>
-                      <h2> spaghetti</h2>
-                    </div>
-                </div>
-                <div className="feed-posts">
-                    <div className="info">
-                      <h1> Spaghetti Bolognese</h1>
-                      <h2> Duration: 2 hours</h2>
-                      <h2> spaghetti</h2>
-                    </div>
-                </div>
-                
+                      <h4> By: Savannah Ogletree</h4>
+                      <h2> Super easy Spaghetti recipe and I wanted to share!</h2>
+                      <div className="image-placeholder">
+                        <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" />
+                      </div>
+                      <Link to="/my-recipes">
+                          <button className="btn-signin">View Recipe</button>
+                      </Link>
+                  </div>
                 </div>
               </div>
       </div>

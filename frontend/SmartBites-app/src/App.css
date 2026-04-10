@@ -311,6 +311,7 @@ button {
   flex: 1; /* buttons scroll to bottom of page */
   background: linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%);
   border-radius: 20px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -323,8 +324,9 @@ button {
 }
 
 .feed-posts{
-  flex: 1; /* buttons scroll to bottom of page */
+  flex-grow: 1; /* buttons scroll to bottom of page */
   background: white;
+  min-height: 0;
   border-radius: 20px;
   width: 100%;
   height: auto;
@@ -334,11 +336,6 @@ button {
 }
 
 .feed-photo{
-  flex: 1; /* buttons scroll to bottom of page */
-  background: white;
-  border-radius: 20px;
-  width: 100%;
-  height: auto;
   justify-content: right;
   align-items: right;
   border: 1px solid black;
@@ -627,6 +624,14 @@ button {
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+}
+.feed-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid black;
+  border-radius: 20px;
 }
 
 .image-placeholder {
