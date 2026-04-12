@@ -12,20 +12,26 @@ function ResourcesPage() {
                   <div>
                     <h1>Resources</h1>
                     
-                    <p>
-                      <label for="API"><b>API: </b></label>
-                      Link
-                    </p>
+                    <h2>
+                      <label for="API"><b>GitHub: </b></label>
+                      tiffanyyvo/SmartBites
+                    </h2>
 
-                    <p>
-                      <label for="password"><b>FAQ: </b></label>
-                      FAQs *Link to the FAQ question
-                    </p>
+                    <h2>
+                      <label for="API"><b>MongoDB: </b></label>
+                      *Link MongoDB
+                    </h2>
 
-                    <p>
-                      <label for="password"><b>Submit a Question </b></label>
-                      Link*
-                    </p>
+                    <h2>
+                      <label for="API"><b>Generate Your Own Gemini API: </b></label>
+                      *Link Gemini API
+                    </h2>
+
+                    <h2>
+                      <Link to="/Contact">
+                        <button className="button-snap">Submit a Question</button>
+                      </Link>
+                    </h2>
                   </div>
                 </div>
         </div>

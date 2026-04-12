@@ -20,7 +20,7 @@ function ContactPage() {
                   </Link>
                   <div>
                     <h1>Contact</h1>
-                    <p>Fill out the information below so we can help answer any questions or queries that you may have!</p>
+                    <p>Fill out the information below so we can help answer any questions or queries that you may have! You can also contact our toll free number at 1-800-123-456-7891!</p>
                     
                     {!submitted ? (
                     <div className="inputs">
