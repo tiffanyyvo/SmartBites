@@ -45,3 +45,11 @@ def verify_password(plain_password, hashed_password):
     if isinstance(hashed_password, str):
         hashed_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password)
+
+def add_saved_recipe(email, recipe_data):
+    #pushes the recipes onto correct user array
+    users.update_one(
+        {"email": email},
+        {"$push": {"saved_recipes": recipe_data}}
+    )
+    return {"message": "Recipe saved successfully"}
