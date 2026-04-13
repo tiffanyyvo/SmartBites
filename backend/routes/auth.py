@@ -8,22 +8,23 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
+    name = data.get('name')
     email = data.get('email')
     password = data.get('password')
 
-    if not email or not password:
-        return jsonify({"error": "Email and password required"}), 400
+    if not name or not email or not password:
+        return jsonify({"error": "Name, email, and password required"}), 400
     
     if len(password) < 8:
         return jsonify({"error": "Password must be at least 8 characters"}), 400
 
-    result = create_user(email, password)
+    result = create_user(name, email, password)
     
     if "error" in result:
         return jsonify(result), 409  # acct with this email exists
     
     token = create_access_token(identity=email)
-    return jsonify({"token": token, "email": email}), 201
+    return jsonify({"token": token, "email": email, "name": name}), 201
 
 # POST /auth/login
 @auth_bp.route('/login', methods=['POST'])
@@ -41,7 +42,7 @@ def login():
         return jsonify({"error": "Invalid email or password"}), 401
     
     token = create_access_token(identity=email)
-    return jsonify({"token": token, "email": email}), 200
+    return jsonify({"token": token, "name": user.get('name', user['email']), "email": email}), 200
 
 # GET /auth/me/profile
 # returns user's dietary restrictions and cuisine preferences
@@ -51,6 +52,7 @@ def get_profile():
     email = get_jwt_identity()
     user = get_user_by_email(email)
     return jsonify({
+        "name": user.get('name', user['email']),
         "email": user['email'],
         "dietary_restrictions": user['dietary_restrictions'],
         "cuisine_preferences": user['cuisine_preferences']
