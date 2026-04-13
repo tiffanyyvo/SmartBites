@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from models.user import create_user, get_user_by_email, verify_password, update_user_preferences
+from models.user import create_user, get_user_by_email, verify_password, update_user_preferences, add_saved_recipe
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -74,3 +74,21 @@ def update_profile():
         return jsonify(result), 400
     
     return jsonify(result), 200
+
+#POST /auth/my-recipes
+@auth_bp.route('/save-recipe', methods=['POST'])
+@jwt_required()
+def save_recipe():
+    email = get_jwt_identity()
+    recipe_data = request.get_json()
+    add_saved_recipe(email, recipe_data)
+    return jsonify({"message": "Recipe saved successfully!"}), 200
+
+#GET /auth/my-recipes
+@auth_bp.route('/my-recipes', methods=['GET'])
+@jwt_required()
+def get_my_recipes():
+    email = get_jwt_identity()
+    user = get_user_by_email(email)
+    #return the users array
+    return jsonify(user.get('saved_recipes', [])), 200
