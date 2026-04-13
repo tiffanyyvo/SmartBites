@@ -32,6 +32,7 @@ function SignInPage() {
         return setError(data.error || 'Login failed.');
       }
 
+      localStorage.setItem('name', data.name);
       localStorage.setItem('token', data.token);
       localStorage.setItem('email', data.email);
       navigate('/'); // redirect to home after login

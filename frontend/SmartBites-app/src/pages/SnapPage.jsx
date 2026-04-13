@@ -288,20 +288,47 @@ function SnapPage({ onAddRecipe }) {
                         fontWeight: 'bold',
                         transition: 'background-color 0.2s'
                       }}
-                      onClick={(e) => {
-                        if (onAddRecipe) {
-                          onAddRecipe({
-                            id: Date.now() + idx,
-                            title: recipe.name,
-                            updated: new Date().toLocaleDateString(),
-                            ingredients: recipe.ingredients,
-                            instructions: recipe.instructions,
-                            prep_time: recipe.prep_time,
-                            cook_time: recipe.cook_time
+                      onClick={async (e) => {
+                        const token = localStorage.getItem('token');
+
+                        if (!token) {
+                          alert('Please log in to save recipes!');
+                          return;
+                        }
+
+                        const recipeToSave = {
+                          id: Date.now() + idx,
+                          title: recipe.name,
+                          updated: new Date().toLocaleDateString(),
+                          ingredients: recipe.ingredients,
+                          instructions: recipe.instructions,
+                          prep_time: recipe.prep_time,
+                          cook_time: recipe.cook_time
+                        };
+
+                        try {
+                          //call backend route
+                          const response = await fetch('http://localhost:5001/auth/save-recipe', {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${token}` // This proves who the user is
+                            },
+                            body: JSON.stringify(recipeToSave)
                           });
-                          e.target.innerText = '✓ Saved to My Recipes';
-                          e.target.style.backgroundColor = '#dcece0';
-                          e.target.disabled = true;
+
+                          if (response.ok) {
+                            e.target.innerText = '✓ Saved to My Recipes';
+                            e.target.style.backgroundColor = '#dcece0';
+                            e.target.disabled = true;
+
+                            //keeps local state
+                            if (onAddRecipe) onAddRecipe(recipeToSave);
+                          } else {
+                            alert('Failed to save recipe to database.');
+                          }
+                        } catch (error) {
+                          console.error("Error saving recipe:", error);
                         }
                       }}
                     >

@@ -1,38 +1,77 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-function MyRecipesPage({ recipes = [] }) {
+function MyRecipesPage() {
 
   //need a state for recipes, loading and errors
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
   const [activeFilter, setActiveFilter] = useState('All');
   const [expandedRecipeId, setExpandedRecipeId] = useState(null);
   const filters = ['All', 'Chicken', 'Tofu', 'Salmon', 'Beef', 'Veggie'];
 
   //uses effect!
+  useEffect(() => {
+    const fetchMyRecipes = async () => {
+      const token = localStorage.getItem('token');
 
-  //includes fetched state now!
-    const displayedRecipes = recipes.filter((recipe) => {
-      if (activeFilter === 'All') return true;
-
-      const filterTerm = activeFilter.toLowerCase();
-
-      //everything not protein
-      if (filterTerm === 'veggie') {
-        const meatFilters = ['chicken', 'tofu', 'salmon', 'beef'];
-        //check for filters
-        const hasMeatOrTofu = recipe.ingredients?.some(ing =>
-          meatFilters.some(meat => ing.toLowerCase().includes(meat))
-        ) || meatFilters.some(meat => recipe.title.toLowerCase().includes(meat));
-
-        return !hasMeatOrTofu;
+      if (!token) {
+        setError('Please sign in to view your recipes.');
+        setLoading(false);
+        return;
       }
 
-      //return
-      return (
-        (recipe.ingredients && recipe.ingredients.some(ing => ing.toLowerCase().includes(filterTerm))) ||
-        (recipe.title && recipe.title.toLowerCase().includes(filterTerm))
-      );
-    });
+      try {
+        // Calling your new backend route!
+        const res = await fetch('http://localhost:5001/auth/my-recipes', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          setRecipes(data); //gets the saved data
+        } else {
+          setError(data.error || 'Failed to fetch recipes.');
+        }
+      } catch (err) {
+        setError('Could not connect to the server.');
+      } finally {
+        setLoading(false); //stop loading state
+      }
+    };
+
+    fetchMyRecipes();
+  }, []); //make sure page loads first
+
+  //includes fetched state now!
+  const displayedRecipes = recipes.filter((recipe) => {
+    if (activeFilter === 'All') return true;
+
+    const filterTerm = activeFilter.toLowerCase();
+
+    //everything not protein
+    if (filterTerm === 'veggie') {
+      const meatFilters = ['chicken', 'tofu', 'salmon', 'beef'];
+      //check for filters
+      const hasMeatOrTofu = recipe.ingredients?.some(ing =>
+        meatFilters.some(meat => ing.toLowerCase().includes(meat))
+      ) || meatFilters.some(meat => recipe.title.toLowerCase().includes(meat));
+
+      return !hasMeatOrTofu;
+    }
+
+    //return
+    return (
+      (recipe.ingredients && recipe.ingredients.some(ing => ing.toLowerCase().includes(filterTerm))) ||
+      (recipe.title && recipe.title.toLowerCase().includes(filterTerm))
+    );
+  });
 
   return (
     <div className="snap-layout">
@@ -104,8 +143,16 @@ function MyRecipesPage({ recipes = [] }) {
               ))}
             </div>
 
-            {/* if not signed in */}
-            {displayedRecipes.length === 0 ? (
+            {/* if not signed in / Loading states */}
+            {loading ? (
+              <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                <h3>Loading your recipes...</h3>
+              </div>
+            ) : error ? (
+               <div style={{ textAlign: 'center', marginTop: '50px', color: 'red' }}>
+                <h3>{error}</h3>
+              </div>
+            ) : displayedRecipes.length === 0 ? (
               <div style={{ textAlign: 'center', marginTop: '50px', color: '#666' }}>
                 <h3>No recipes found.</h3>
                 <p>Go to the Snap page to generate some!</p>

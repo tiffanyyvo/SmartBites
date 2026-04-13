@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from models.user import create_user, get_user_by_email, verify_password, update_user_preferences
+from models.user import create_user, get_user_by_email, verify_password, update_user_preferences, add_saved_recipe
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -8,23 +8,23 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
+    name = data.get('name')
     email = data.get('email', '').strip().lower()
     password = data.get('password', '')
 
-    if not email or not password:
-        return jsonify({"error": "Email and password required"}), 400
+    if not name or not email or not password:
+        return jsonify({"error": "Name, email, and password required"}), 400
     
     if len(password) < 8:
         return jsonify({"error": "Password must be at least 8 characters"}), 400
 
-    result = create_user(email, password)
+    result = create_user(name, email, password)
     
     if "error" in result:
         return jsonify(result), 409
     
     token = create_access_token(identity=email)
-    return jsonify({"token": token, "email": email}), 201
-
+    return jsonify({"token": token, "email": email, "name": name}), 201
 
 # POST /auth/login
 @auth_bp.route('/login', methods=['POST'])
@@ -42,7 +42,7 @@ def login():
         return jsonify({"error": "Invalid email or password"}), 401
     
     token = create_access_token(identity=email)
-    return jsonify({"token": token, "email": email}), 200
+    return jsonify({"token": token, "name": user.get('name', user['email']), "email": email}), 200
 
 # GET /auth/me/profile
 # returns user's dietary restrictions and cuisine preferences
@@ -52,6 +52,7 @@ def get_profile():
     email = get_jwt_identity()
     user = get_user_by_email(email)
     return jsonify({
+        "name": user.get('name', user['email']),
         "email": user['email'],
         "dietary_restrictions": user['dietary_restrictions'],
         "cuisine_preferences": user['cuisine_preferences']
@@ -73,3 +74,21 @@ def update_profile():
         return jsonify(result), 400
     
     return jsonify(result), 200
+
+#POST /auth/my-recipes
+@auth_bp.route('/save-recipe', methods=['POST'])
+@jwt_required()
+def save_recipe():
+    email = get_jwt_identity()
+    recipe_data = request.get_json()
+    add_saved_recipe(email, recipe_data)
+    return jsonify({"message": "Recipe saved successfully!"}), 200
+
+#GET /auth/my-recipes
+@auth_bp.route('/my-recipes', methods=['GET'])
+@jwt_required()
+def get_my_recipes():
+    email = get_jwt_identity()
+    user = get_user_by_email(email)
+    #return the users array
+    return jsonify(user.get('saved_recipes', [])), 200

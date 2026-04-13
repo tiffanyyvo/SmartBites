@@ -4,15 +4,14 @@ import bcrypt
 db = client["smartbites"]
 users = db["users"]
 
-def create_user(email, password):
-    email = email.strip().lower()
-
+def create_user(name, email, password):
     if users.find_one({"email": email}):
         return {"error": "Email already registered"}
     
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     
     user = {
+        "name": name,
         "email": email,
         "password": hashed,
         "dietary_restrictions": [],
@@ -22,7 +21,7 @@ def create_user(email, password):
     }
     
     result = users.insert_one(user)
-    return {"id": str(result.inserted_id), "email": email}
+    return {"id": str(result.inserted_id), "name": name, "email": email}
 
 # Finds user by email and updates dietary restrictions and cuisine preferences
 def update_user_preferences(email, dietary_restrictions=None, cuisine_preferences=None):
@@ -45,3 +44,11 @@ def verify_password(plain_password, hashed_password):
     if isinstance(hashed_password, str):
         hashed_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password)
+
+def add_saved_recipe(email, recipe_data):
+    #pushes the recipes onto correct user array
+    users.update_one(
+        {"email": email},
+        {"$push": {"saved_recipes": recipe_data}}
+    )
+    return {"message": "Recipe saved successfully"}

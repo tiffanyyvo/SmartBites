@@ -36,7 +36,7 @@ function RegisterPage() {
       const res = await fetch('http://localhost:5001/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, password: formData.password }),
+        body: JSON.stringify({ name: formData.name, email: formData.email, password: formData.password }),
       });
 
       const data = await res.json();
@@ -45,6 +45,7 @@ function RegisterPage() {
         return setError(data.error || 'Registration failed.');
       }
 
+      localStorage.setItem('name', data.name);
       localStorage.setItem('token', data.token);
       localStorage.setItem('email', data.email);
       navigate('/');

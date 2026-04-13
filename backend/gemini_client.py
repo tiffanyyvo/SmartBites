@@ -8,7 +8,7 @@ class GeminiClient:
     def __init__(self): 
         load_dotenv()
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-        self.model = "gemini-2.5-flash"
+        self.model = "gemini-2.5-flash-lite"
         
     def analyze_fridge_image(self, image_bytes, mime_type="image/jpeg"):
         """
@@ -74,10 +74,12 @@ class GeminiClient:
         
         try:
             response = self.client.models.generate_content(
+                #request_options={"timeout": 120},
                 model=self.model,
                 contents=prompt,
                 config=types.GenerateContentConfig(
-                    response_mime_type="application/json"
+                    response_mime_type="application/json",
+                    http_options={"timeout": 120000}
                 )
             )
             return json.loads(response.text)
