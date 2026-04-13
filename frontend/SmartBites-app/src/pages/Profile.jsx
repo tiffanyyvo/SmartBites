@@ -14,13 +14,21 @@ function ProfilePage() {
       }
 
       try {
-        const res = await fetch('http://localhost:5001/api/profile', {
+        const res = await fetch('http://localhost:5001/auth/me/profile', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
 
-        if (res.ok) setProfile(data);
-        else setError(data.error);
+        if (res.ok) {
+          setProfile(data);
+        } else {
+          if (res.status === 401) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('email');
+            localStorage.removeItem('name');
+          }
+          setError(data.error);
+        }
       } catch (err) {
         setError('Failed to fetch profile');
       }
@@ -48,10 +56,10 @@ function ProfilePage() {
                     <Link to="/">
                     <button className="button-snap">←</button>
                     </Link>
-                    <h1>Welcome *profile.name*!</h1>
+                    <h1>Welcome {profile.name}!</h1>
                 </div>
                 <div className="card-header">
-                    <p>Email: </p>
+                    <p>Email: {profile.email}</p>
                 </div>
                 <div className="card-header">
                     <Link to="/my-recipes">
