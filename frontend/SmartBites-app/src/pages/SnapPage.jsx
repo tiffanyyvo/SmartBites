@@ -7,6 +7,7 @@ function SnapPage({ onAddRecipe }) {
   const [recipeLoaded, setRecipeLoaded] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [detectedIngredients, setDetectedIngredients] = useState([]);
   const [generatedRecipes, setGeneratedRecipes] = useState([]);
@@ -17,6 +18,7 @@ function SnapPage({ onAddRecipe }) {
   const onFileChange = (event) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
+      setErrorMessage('');
     }
   };
 
@@ -30,7 +32,7 @@ function SnapPage({ onAddRecipe }) {
 
   const handleGenerateRecipe = async () => {
     if (!selectedFile) {
-      alert('Please select an image first!');
+      setErrorMessage('Please add a photo before submitting!');
       return;
     }
 
@@ -104,7 +106,7 @@ function SnapPage({ onAddRecipe }) {
 
       {/* main area */}
       <div className="snap-main-area">
-        <div className="white-card">
+        <div className="white-card" style={recipeLoaded ? { maxWidth: '1300px' } : {}}>
           {!recipeLoaded ? (
             /* pre AI generation */
             <div className="card-content-wrapper">
@@ -212,7 +214,18 @@ function SnapPage({ onAddRecipe }) {
                                 </div>
                               </div>
                           )}
-
+              {errorMessage && (
+                <p style={{
+                  color: '#991b1b',
+                  backgroundColor: '#fef2f2',
+                  border: '1px solid #fca5a5',
+                  borderRadius: '8px',
+                  padding: '10px 16px',
+                  fontSize: '14px',
+                  textAlign: 'center',
+                  marginBottom: '12px'
+                }}>{errorMessage}</p>
+              )}
               <div className="action-buttons">
                 <input
                   type="file"
@@ -249,7 +262,7 @@ function SnapPage({ onAddRecipe }) {
                 }} style={{cursor: 'pointer', fontSize: '24px', marginRight: '15px'}}>←</span>
                 <div>
                   <h1>Suggested Recipes</h1>
-                  <p>Here are recipes based on your fridge!</p>
+                  <p>Here are recipes based on your provided ingredients!</p>
                 </div>
               </div>
 
@@ -286,33 +299,36 @@ function SnapPage({ onAddRecipe }) {
               }}>
                 {generatedRecipes.map((recipe, idx) => (
                   <div key={idx} className="recipe-card" style={{
-                    padding: '20px',
                     backgroundColor: '#ffffff',
                     border: '1px solid #e0e0e0',
                     borderRadius: '16px',
                     boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    overflow: 'hidden'
                   }}>
-                    <h2 style={{
-                      marginTop: '0',
-                      fontSize: '1.5rem',
-                      color: '#202124',
-                      lineHeight: '1.2'
-                    }}>
-                      {recipe.name}
-                    </h2>
-
                     <div style={{
-                      display: 'flex',
-                      gap: '15px',
-                      marginBottom: '15px',
-                      fontSize: '0.9rem',
-                      color: '#5f6368'
+                      backgroundColor: '#1a2e1b',
+                      padding: '24px 20px',
+                      marginBottom: '0'
                     }}>
-                      <span><strong>Prep:</strong> {recipe.prep_time}</span>
-                      <span><strong>Cook:</strong> {recipe.cook_time}</span>
+                      <h2 style={{
+                        margin: '0 0 8px',
+                        fontSize: '1.4rem',
+                        color: 'white',
+                        lineHeight: '1.2'
+                      }}>{recipe.name}</h2>
+                      <div style={{
+                        display: 'flex',
+                        gap: '15px',
+                        fontSize: '0.85rem',
+                        color: '#a4e5aa'
+                      }}>
+                        <span>Prep: {recipe.prep_time}</span>
+                        <span>Cook: {recipe.cook_time}</span>
+                      </div>
                     </div>
+                    <div style={{ padding: '20px', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
 
                     <h3 style={{ fontSize: '1.1rem', marginBottom: '8px', color: '#202124' }}>Ingredients:</h3>
                     <ul style={{
@@ -342,19 +358,7 @@ function SnapPage({ onAddRecipe }) {
                       ))}
                     </ol>
 
-                    <button
-                      style={{
-                        marginTop: '20px',
-                        padding: '10px',
-                        backgroundColor: '#e6f4ea',
-                        color: '#137333',
-                        border: 'none',
-                        borderRadius: '8px',
-                        cursor: 'pointer',
-                        fontWeight: 'bold',
-                        transition: 'background-color 0.2s'
-                      }}
-                      onClick={async (e) => {
+                    <button className="btn-save-recipe" onClick={async (e) => {
                         const token = localStorage.getItem('token');
 
                         if (!token) {
@@ -397,9 +401,10 @@ function SnapPage({ onAddRecipe }) {
                           console.error("Error saving recipe:", error);
                         }
                       }}
-                    >
+                  >
                       Save Recipe
                     </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -410,15 +415,9 @@ function SnapPage({ onAddRecipe }) {
                 display: 'flex',
                 justifyContent: 'center'
               }}>
-                <button className="btn-snap" style={{
-                  backgroundColor: '#5f6368',
-                  color: 'white',
-                  padding: '12px 24px',
-                  borderRadius: '25px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: '600'
-                }} onClick={() => {
+                <button className="btn-snap-another-recipe" onClick={() => {
+                  
+                
                   setRecipeLoaded(false);
                   setSelectedFile(null);
                   setDetectedIngredients([]);

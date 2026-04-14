@@ -432,6 +432,45 @@ button {
   font-size: 1rem;
 }
 
+.btn-snap:hover,
+.btn-upload:hover,
+.btn-submit:hover {
+  background-color: #2e4e30;
+  transition: background-color 0.2s;
+}
+
+.btn-save-recipe {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #1a2e1b;
+  color: white;
+  border: none;
+  border-radius: 100px; 
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.btn-save-recipe:hover {
+  background-color: #2e4e30;
+}
+
+.btn-snap-another-recipe {
+  background-color: #1a2e1b;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-snap-another-recipe:hover {
+  background-color: #2e4e30;
+}
+
 /*sign in stuff*/
 .white-card-signin {
   background-color: white;
