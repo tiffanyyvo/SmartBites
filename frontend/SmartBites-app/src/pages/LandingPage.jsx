@@ -33,10 +33,11 @@ function LandingPage() {
           <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" />
         </div>
         <ul className="nav-links">
-          <Link to="/explore"><h4>Explore</h4></Link>
-          <Link to="/snap"><h4>Snap</h4></Link>
-          <Link to="/resources"><h4>Resources</h4></Link>
-          <Link to="/contact"><h4>Contact</h4></Link>
+          <li><Link to="/explore">Explore</Link></li>
+          <li><Link to="/snap">Snap</Link></li>
+          <li><Link to="/my-recipes">My Recipes</Link></li>
+          <li><Link to="/resources">Resources</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
         </ul>
         <div className="nav-actions">
             {/* sign in goes to snap for now, until sign in is implemented*/}

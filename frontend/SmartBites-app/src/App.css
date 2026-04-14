@@ -241,9 +241,9 @@ button {
 /*SNAP PAGE*/
 /* layout */
 .snap-layout {
-  display: flex !important;
-  flex-direction: row !important; /* need important */
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   width: 100vw;
   background-color: #a4e5aa;
   overflow: hidden;
@@ -306,14 +306,16 @@ button {
 .snap-main-area {
   flex: 1;
   display: flex;
-  padding: 20px 20px 20px 0; /* Padding around the white card */
-  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
 }
 
 .white-card {
   background-color: white;
   border-radius: 20px;
-  flex: 1;
+  width: 100%;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -407,7 +409,7 @@ button {
 }
 
 .btn-snap {
-  background-color: #5d606b; /* dark gray */
+  background-color: #1a2e1b;
   color: white;
   border-radius: 25px;
   padding: 12px 40px;
@@ -415,16 +417,16 @@ button {
 }
 
 .btn-upload {
-  background-color: #e6e6f2; /* light gray */
-  color: #333;
+  background-color: #1a2e1b;
+  color: white;
   border-radius: 25px;
   padding: 12px 40px;
   font-size: 1rem;
 }
 
 .btn-submit {
-  background-color: #5d606b; /* Dark gray */
-  color: #ffffff;
+  background-color: #1a2e1b;
+  color: white;
   border-radius: 25px;
   padding: 12px 40px;
   font-size: 1rem;

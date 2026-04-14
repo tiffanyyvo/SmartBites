@@ -1,10 +1,12 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import SmartBitesLogo from '../assets/Smartbites_logo.png';
 
 function SnapPage({ onAddRecipe }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [recipeLoaded, setRecipeLoaded] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [detectedIngredients, setDetectedIngredients] = useState([]);
   const [generatedRecipes, setGeneratedRecipes] = useState([]);
@@ -84,27 +86,20 @@ function SnapPage({ onAddRecipe }) {
   return (
     <div className="snap-layout">
       {/* left sidebar */}
-      <nav className="snap-sidebar">
-        <div className="sidebar-top-icons">
-          <div className="icon-menu">≡</div>
+      <nav className="navbar">
+        <div className="nav-logo">
+          <Link to="/"><img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" /></Link>
         </div>
-        <ul className="sidebar-links">
-          <li>
-            <Link to="/snap">
-              <span className="nav-text">Snap</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/explore">
-              <span className="nav-text">Explore</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/my-recipes">
-              <span className="nav-text">My Recipes</span>
-            </Link>
-          </li>
+        <ul className="nav-links">
+          <li><Link to="/explore">Explore</Link></li>
+          <li><Link to="/snap">Snap</Link></li>
+          <li><Link to="/my-recipes">My Recipes</Link></li>
+          <li><Link to="/resources">Resources</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
         </ul>
+        <div className="nav-actions">
+          <Link to="/profile"><button className="btn-signin">Profile</button></Link>
+        </div>
       </nav>
 
       {/* main area */}
@@ -114,27 +109,32 @@ function SnapPage({ onAddRecipe }) {
             /* pre AI generation */
             <div className="card-content-wrapper">
               <div className="card-header">
-                <Link to="/">
-                  <button className="button-snap">←</button>
-                </Link>
                 <div>
-                  <h1>Snap</h1>
-                  <p>Snap a photo of your fridge</p>
+                  <p style={{ color: '#1a2e1b', fontWeight: '600', fontSize: '1.3rem' }}>Snap a photo of your ingredients!</p>
                 </div>
               </div>
 
               {/* UPDATED CAMERA DISPLAY AREA FOR IMAGE PREVIEW */}
-              <div className="camera-display-area" style={{
-                minHeight: '250px',
+              <div className="camera-display-area" onClick={() => !isGenerating && setShowModal(true)} style={{
+                cursor: isGenerating ? 'default' : 'pointer',
+                minHeight: '400px',
                 backgroundColor: '#f0eff3',
                 borderRadius: '16px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 overflow: 'hidden',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                position: 'relative'
               }}>
-                <div className="placeholder-graphic" style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div className="placeholder-graphic" style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center',
+                  pointerEvents: 'none' 
+                }}>
                   {selectedFile ? (
                     <img
                       src={URL.createObjectURL(selectedFile)}
@@ -142,10 +142,76 @@ function SnapPage({ onAddRecipe }) {
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                   ) : (
-                    <p style={{ color: '#666' }}>No image selected</p>
+                    <p style={{ color: '#666' }}>Click to add a photo</p>
                   )}
                 </div>
+
+                {/* loading overlay */}
+                {isGenerating && (
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'rgba(255,255,255,0.85)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '16px',
+                    borderRadius: '16px'
+                  }}>
+                    <div style={{
+                      width: '48px',
+                      height: '48px',
+                      border: '4px solid #e8f5e9',
+                      borderTop: '4px solid #1a2e1b',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite'
+                    }} />
+                    <p style={{ color: '#1a2e1b', fontWeight: '500', margin: 0 }}>Analyzing your ingredients...</p>
+                    <p style={{ color: '#6a8a6c', fontSize: '13px', margin: 0 }}>This may take a few seconds</p>
+                  </div>
+                )}
               </div>
+
+                            {showModal && (
+                              <div style={{
+                                position: 'fixed',
+                                inset: 0,
+                                background: 'rgba(0,0,0,0.4)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                zIndex: 1000
+                                }} onClick={() => setShowModal(false)}>
+                                <div style={{
+                                  background: 'white',
+                                  borderRadius: '20px',
+                                  padding: '40px',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  gap: '16px',
+                                  minWidth: '280px',
+                                  alignItems: 'center'
+                                }} onClick={e => e.stopPropagation()}>
+                                  <h3 style={{ margin: '0 0 8px', color: '#1a2e1b' }}>Add a photo</h3>
+                                  <button className="btn-snap" style={{ width: '100%' }} onClick={() => {
+                                    handleSnapClick();
+                                    setShowModal(false);
+                                  }}>Snap</button>
+                                  <button className="btn-upload" style={{ width: '100%' }} onClick={() => {
+                                    handleUploadClick();
+                                    setShowModal(false);
+                                  }}>Upload</button>
+                                  <button style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    color: '#6a8a6c',
+                                    cursor: 'pointer',
+                                    fontSize: '14px'
+                                  }} onClick={() => setShowModal(false)}>Cancel</button>
+                                </div>
+                              </div>
+                          )}
 
               <div className="action-buttons">
                 <input
