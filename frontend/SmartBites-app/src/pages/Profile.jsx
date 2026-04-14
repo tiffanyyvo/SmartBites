@@ -121,7 +121,7 @@ function ProfilePage() {
             {/* dietary restrictions */}
             <div style={{ marginBottom: '28px' }}>
               <h3 style={{ color: '#1a2e1b', marginBottom: '6px', fontSize: '1rem' }}>Dietary Restrictions</h3>
-              <p style={{ color: '#6a8a6c', fontSize: '0.85rem', marginBottom: '12px' }}>Select all that apply — we'll use these when generating recipes.</p>
+              <p style={{ color: '#6a8a6c', fontSize: '0.85rem', marginBottom: '12px' }}>Select all that apply so we can use these when generating recipes.</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {dietaryOptions.map(option => (
                   <button key={option} onClick={() => toggleItem(dietaryRestrictions, setDietaryRestrictions, option)} style={{
@@ -145,7 +145,7 @@ function ProfilePage() {
             {/* cuisine preferences */}
             <div style={{ marginBottom: '32px' }}>
               <h3 style={{ color: '#1a2e1b', marginBottom: '6px', fontSize: '1rem' }}>Cuisine Preferences</h3>
-              <p style={{ color: '#6a8a6c', fontSize: '0.85rem', marginBottom: '12px' }}>What cuisines do you enjoy most?</p>
+              <p style={{ color: '#6a8a6c', fontSize: '0.85rem', marginBottom: '12px' }}>What cuisines do you enjoy most? We will use these when generating recipes.</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {cuisineOptions.map(option => (
                   <button key={option} onClick={() => toggleItem(cuisinePreferences, setCuisinePreferences, option)} style={{
