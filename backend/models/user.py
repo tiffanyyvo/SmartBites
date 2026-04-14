@@ -8,7 +8,6 @@ def create_user(name, email, password):
     if users.find_one({"email": email}):
         return {"error": "Email already registered"}
     
-    # encode binary pwd to a string
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     
     user = {

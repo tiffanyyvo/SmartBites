@@ -9,8 +9,8 @@ auth_bp = Blueprint('auth', __name__)
 def register():
     data = request.get_json()
     name = data.get('name')
-    email = data.get('email')
-    password = data.get('password')
+    email = data.get('email', '').strip().lower()
+    password = data.get('password', '')
 
     if not name or not email or not password:
         return jsonify({"error": "Name, email, and password required"}), 400
@@ -21,7 +21,7 @@ def register():
     result = create_user(name, email, password)
     
     if "error" in result:
-        return jsonify(result), 409  # acct with this email exists
+        return jsonify(result), 409
     
     token = create_access_token(identity=email)
     return jsonify({"token": token, "email": email, "name": name}), 201
@@ -30,8 +30,8 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
+    email = data.get('email', '').strip().lower()
+    password = data.get('password', '')
 
     if not email or not password:
         return jsonify({"error": "Email and password required"}), 400

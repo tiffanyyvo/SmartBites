@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import SmartBitesLogo from '../assets/SmartBites_Logo.png';
 
 function MyRecipesPage() {
 
@@ -7,6 +8,7 @@ function MyRecipesPage() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
 
   const [shareModalRecipe, setShareModalRecipe] = useState(null);
   const [postName, setPostName] = useState('');
@@ -18,6 +20,13 @@ function MyRecipesPage() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [expandedRecipeId, setExpandedRecipeId] = useState(null);
   const filters = ['All', 'Chicken', 'Tofu', 'Salmon', 'Beef', 'Veggie'];
+
+  const scrollToTop = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      };
 
   //uses effect!
   useEffect(() => {
@@ -124,7 +133,6 @@ const handleShare = async () => {
       return !hasMeatOrTofu;
     }
 
-    //return
     return (
       (recipe.ingredients && recipe.ingredients.some(ing => ing.toLowerCase().includes(filterTerm))) ||
       (recipe.title && recipe.title.toLowerCase().includes(filterTerm))
@@ -133,72 +141,96 @@ const handleShare = async () => {
 
   return (
     <div className="snap-layout">
-      <nav className="snap-sidebar">
-        <div className="sidebar-top-icons">
-          <div className="icon-menu">≡</div>
+      <nav className="navbar">
+        <div className="nav-logo">
+          <Link to="/"><img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" /></Link>
         </div>
-        <ul className="sidebar-links">
-          <li>
-            <Link to="/snap">
-              <span className="nav-text">Snap</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/explore">
-              <span className="nav-text">Explore</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/my-recipes">
-              <span className="nav-text" style={{ fontWeight: 'bold' }}>My Recipes</span>
-            </Link>
-          </li>
+        <ul className="nav-links">
+          <li><Link to="/explore">Explore</Link></li>
+          <li><Link to="/snap">Snap</Link></li>
+          <li><Link to="/my-recipes">My Recipes</Link></li>
+          <li><Link to="/resources">Resources</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
         </ul>
+        <div className="nav-actions">
+          <Link to="/profile"><button className="btn-signin">Profile</button></Link>
+        </div>
       </nav>
 
       {/* main area */}
       <div className="snap-main-area">
-        <div className="white-card">
+        <div className="white-card" style={{ maxWidth: '1200px', width: '100%', minHeight: '80vh' }}>
           <div className="card-content-wrapper" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 
             {/* Header */}
             <div className="card-header" style={{ marginBottom: '20px' }}>
-              <Link to="/">
-                <button className="button-snap">←</button>
-              </Link>
               <div style={{ flexGrow: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginLeft: '15px' }}>
                 <div>
                   <h1 style={{ margin: 0 }}>My Recipes</h1>
                 </div>
-                <div style={{ fontSize: '24px', cursor: 'pointer', fontWeight: 'bold' }}>⋮</div>
               </div>
             </div>
 
-            {/* filters for recipes */}
-            <div className="filter-container" style={{ display: 'flex', gap: '10px', marginBottom: '30px', overflowX: 'auto', paddingBottom: '5px' }}>
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '20px',
-                    border: '1px solid #ccc',
-                    backgroundColor: activeFilter === filter ? '#eaddff' : 'transparent',
-                    color: activeFilter === filter ? '#21005d' : '#333',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '14px',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {activeFilter === filter && <span style={{ fontWeight: 'bold' }}>✓</span>}
-                  {filter}
-                </button>
-              ))}
+            {/* filters */}
+            <div style={{ position: 'relative', marginBottom: '24px' }}>
+              <button
+                onClick={() => setShowFilter(!showFilter)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '9px 18px',
+                  borderRadius: '100px',
+                  border: '1px solid #d4ead6',
+                  backgroundColor: activeFilter !== 'All' ? '#1a2e1b' : 'white',
+                  color: activeFilter !== 'All' ? 'white' : '#1a2e1b',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                Filter {activeFilter !== 'All' ? `· ${activeFilter}` : ''} {showFilter ? '▲' : '▼'}
+              </button>
+
+              {showFilter && (
+                <div style={{
+                  position: 'absolute',
+                  top: '44px',
+                  left: 0,
+                  backgroundColor: 'white',
+                  border: '1px solid #d4ead6',
+                  borderRadius: '16px',
+                  padding: '8px',
+                  zIndex: 100,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                  minWidth: '160px',
+                  boxShadow: '0 4px 16px rgba(26,46,27,0.1)'
+                }}>
+                  {filters.map(filter => (
+                    <button
+                      key={filter}
+                      onClick={() => { setActiveFilter(filter); setShowFilter(false); }}
+                      style={{
+                        padding: '9px 16px',
+                        borderRadius: '10px',
+                        border: 'none',
+                        backgroundColor: activeFilter === filter ? '#edf9ee' : 'transparent',
+                        color: activeFilter === filter ? '#1a2e1b' : '#4a6a4c',
+                        fontWeight: activeFilter === filter ? '600' : '400',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'background-color 0.2s'
+                      }}
+                    >
+                      {activeFilter === filter ? '✓ ' : ''}{filter}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* if not signed in / Loading states */}
