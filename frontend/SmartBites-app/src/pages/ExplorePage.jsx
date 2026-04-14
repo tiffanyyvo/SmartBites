@@ -5,6 +5,31 @@ import SmartBitesLogo from '../assets/Smartbites_logo.png';
 function ExplorePage() {
   
   return (
+
+    
+    <div className="snap-layout">
+      <nav className="snap-sidebar">
+        <div className="sidebar-top-icons">
+          <div className="icon-menu">≡</div>
+        </div>
+        <ul className="sidebar-links">
+          <li>
+            <Link to="/snap">
+              <span className="nav-text">Snap</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/explore">
+              <span className="nav-text">Explore</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/my-recipes">
+              <span className="nav-text" style={{ fontWeight: 'bold' }}>My Recipes</span>
+            </Link>
+          </li>
+        </ul>
+      </nav>
     <div className="snap-main-area">
           <div className="white-card">
               <div className="card-content-wrapper">
@@ -16,7 +41,7 @@ function ExplorePage() {
                   <nav>
                     <div className="nav-actions">
                       {/* sign in goes to snap for now, until sign in is implemented*/}
-                      <Link to="/snap">
+                      <Link to="/my-recipes">
                           <button className="btn-signin">Make a Post</button>
                       </Link>
                     </div>
@@ -57,6 +82,7 @@ function ExplorePage() {
                 </div>
               </div>
       </div>
+    </div>
     </div>
   );
 }

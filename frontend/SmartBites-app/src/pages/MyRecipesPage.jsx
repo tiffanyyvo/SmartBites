@@ -189,6 +189,9 @@ function MyRecipesPage() {
                         {expandedRecipeId === recipe.id ? '▲' : '▼'}
                       </div>
                     </div>
+                    <Link to="/makepost">
+                    <button className="btn-signin">Add to Explore Page</button>
+                    </Link>
 
                     {expandedRecipeId === recipe.id && (
                       <div style={{

@@ -24,7 +24,7 @@ function ResourcesPage() {
 
                     <h2>
                       <label for="API"><b>Generate Your Own Gemini API: </b></label>
-                      *Link Gemini API
+                      Google AI Studio and create your own API Key and update your .env
                     </h2>
 
                     <h2>

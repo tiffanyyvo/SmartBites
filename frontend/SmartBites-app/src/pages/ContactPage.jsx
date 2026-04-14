@@ -5,6 +5,7 @@ import user_logo from '../assets/user.png';
 import email_logo from '../assets/email.png';
 import password_logo from '../assets/password.png';
 import question_logo from '../assets/question.png';
+import info_logo from '../assets/info.png';
 
 function ContactPage() {
   
