@@ -10,6 +10,13 @@ function MyRecipesPage() {
   const [error, setError] = useState('');
   const [showFilter, setShowFilter] = useState(false);
 
+  const [shareModalRecipe, setShareModalRecipe] = useState(null);
+  const [postName, setPostName] = useState('');
+  const [postDescription, setPostDescription] = useState('');
+  const [shareLoading, setShareLoading] = useState(false);
+  const [shareSuccess, setShareSuccess] = useState('');
+  const [shareError, setShareError] = useState('');
+
   const [activeFilter, setActiveFilter] = useState('All');
   const [expandedRecipeId, setExpandedRecipeId] = useState(null);
   const filters = ['All', 'Chicken', 'Tofu', 'Salmon', 'Beef', 'Veggie'];
@@ -57,6 +64,57 @@ function MyRecipesPage() {
 
     fetchMyRecipes();
   }, []); //make sure page loads first
+
+  const openShareModal = (recipe) => {
+  setShareModalRecipe(recipe);
+  setPostName(recipe.title || '');
+  setPostDescription('');
+  setShareSuccess('');
+  setShareError('');
+};
+
+const closeShareModal = () => {
+  setShareModalRecipe(null);
+  setPostName('');
+  setPostDescription('');
+  setShareSuccess('');
+  setShareError('');
+};
+
+const handleShare = async () => {
+  if (!postName.trim() || !postDescription.trim()) {
+    setShareError('Please fill in both fields.');
+    return;
+  }
+  const token = localStorage.getItem('token');
+  setShareLoading(true);
+  setShareError('');
+  try {
+    const res = await fetch('http://localhost:5001/recipes/share', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        post_name: postName,
+        description: postDescription,
+        recipe: shareModalRecipe
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setShareSuccess('Recipe shared to Explore!');
+      setTimeout(closeShareModal, 1500);
+    } else {
+      setShareError(data.error || 'Failed to share recipe.');
+    }
+  } catch (err) {
+    setShareError('Could not connect to the server.');
+  } finally {
+    setShareLoading(false);
+  }
+};
 
   //includes fetched state now!
   const displayedRecipes = recipes.filter((recipe) => {
@@ -249,6 +307,22 @@ function MyRecipesPage() {
                             <li key={i}>{step}</li>
                           ))}
                         </ol>
+                        <button
+                          onClick={() => openShareModal(recipe)}
+                          style={{
+                            marginTop: '16px',
+                            padding: '10px 20px',
+                            borderRadius: '20px',
+                            border: 'none',
+                            backgroundColor: '#6750a4',
+                            color: 'white',
+                            cursor: 'pointer',
+                            fontSize: '14px',
+                            fontWeight: '600'
+                          }}
+                        >
+                          + Add to Explore Page
+                        </button>
                       </div>
                     )}
                   </div>
@@ -258,29 +332,70 @@ function MyRecipesPage() {
           </div>
         </div>
       </div>
-      <footer className="footer-section">
-        <div className="footer-columns">
-          <div className="footer-col">
-            <h4>Our Design</h4>
-            <ul>
-              <li>Design</li>
-              <li>Resources</li>
-              <li>Development features</li>
-            </ul>
-          </div>
-          <div className="footer-col">
-            <h4>About Us</h4>
-            <ul>
-              <li>Meet our Team</li>
-              <li>Contact Us</li>
-              <li>FAQs</li>
-            </ul>
+      {shareModalRecipe && (
+        <div style={{
+          position: 'fixed', inset: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'white', borderRadius: '20px', padding: '32px',
+            width: '90%', maxWidth: '460px', display: 'flex', flexDirection: 'column', gap: '16px'
+          }}>
+            <h2 style={{ margin: 0, fontSize: '1.3rem', color: '#1a1a1a' }}>Share to Explore</h2>
+            <p style={{ margin: 0, color: '#666', fontSize: '0.9rem' }}>
+              Sharing: <strong>{shareModalRecipe.title}</strong>
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#333' }}>Post Name</label>
+              <input
+                type="text"
+                value={postName}
+                onChange={(e) => setPostName(e.target.value)}
+                placeholder="Give your post a title..."
+                style={{ padding: '10px 14px', borderRadius: '10px', border: '1px solid #ccc', fontSize: '0.95rem', outline: 'none' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#333' }}>Description</label>
+              <textarea
+                value={postDescription}
+                onChange={(e) => setPostDescription(e.target.value)}
+                placeholder="Tell others about this recipe..."
+                rows={3}
+                style={{ padding: '10px 14px', borderRadius: '10px', border: '1px solid #ccc', fontSize: '0.95rem', resize: 'vertical', outline: 'none', fontFamily: 'inherit' }}
+              />
+            </div>
+
+            {shareError && <p style={{ color: 'red', margin: 0, fontSize: '0.9rem' }}>{shareError}</p>}
+            {shareSuccess && <p style={{ color: 'green', margin: 0, fontSize: '0.9rem' }}>{shareSuccess}</p>}
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button
+                onClick={closeShareModal}
+                style={{ padding: '10px 20px', borderRadius: '20px', border: '1px solid #ccc', backgroundColor: 'transparent', cursor: 'pointer', fontSize: '14px' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleShare}
+                disabled={shareLoading}
+                style={{
+                  padding: '10px 20px', borderRadius: '20px', border: 'none',
+                  backgroundColor: shareLoading ? '#b0a0d6' : '#6750a4',
+                  color: 'white', cursor: shareLoading ? 'not-allowed' : 'pointer',
+                  fontSize: '14px', fontWeight: '600'
+                }}
+              >
+                {shareLoading ? 'Sharing...' : 'Share'}
+              </button>
+            </div>
           </div>
         </div>
-        <div className="footer-upload" onClick={scrollToTop} style={{ cursor: 'pointer' }}>
-          <span className="upload-icon">↑</span>
-        </div>
-      </footer>
+      )}
     </div>
   );
 }
