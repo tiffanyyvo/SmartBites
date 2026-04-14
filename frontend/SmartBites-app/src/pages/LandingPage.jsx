@@ -4,7 +4,6 @@ import SmartBitesLogo from '../assets/Smartbites_logo.png';
 import FridgeImage from "../assets/fridge_image.png";
 
 function LandingPage() {
-    //for scroll- so it doesnt snap right up
 
     const [loggedIn, setLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
@@ -33,10 +32,11 @@ function LandingPage() {
           <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img" />
         </div>
         <ul className="nav-links">
-          <Link to="/explore"><h4>Explore</h4></Link>
-          <Link to="/snap"><h4>Snap</h4></Link>
-          <Link to="/resources"><h4>Resources</h4></Link>
-          <Link to="/contact"><h4>Contact</h4></Link>
+          <li><Link to="/explore">Explore</Link></li>
+          <li><Link to="/snap">Snap</Link></li>
+          <li><Link to="/my-recipes">My Recipes</Link></li>
+          <li><Link to="/resources">Resources</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
         </ul>
         <div className="nav-actions">
             {/* sign in goes to snap for now, until sign in is implemented*/}
@@ -54,21 +54,29 @@ function LandingPage() {
       </nav>
 
       {/* title box */}
-      <header className="title-section">
-        <h1>SmartBites</h1>
-        <h2>Snap. Scan. Savor.</h2>
+    <header className="title-section">
+      <div className="title-left">
+        <h1>Your fridge, <em>reimagined.</em></h1>
+        <h2>Snap a photo of your ingredients. Get personalized recipes instantly. Reduce waste, eat better, savor more.</h2>
         <div className="title-actions">
           {!loggedIn ? (
-            <Link to ="/sign-in">
-                <button className="btn-signin">Login/Register</button>
+            <Link to="/sign-in">
+              <button className="btn-signin">Login/Register</button>
             </Link>
           ) : (
-            <Link to ="/profile">
-                <button className="btn-signin">Hi, {userName}!</button>
+            <Link to="/profile">
+              <button className="btn-signin">Hi, {userName}!</button>
             </Link>
           )}
+          <Link to="/explore">
+            <button className="btn-ghost">Explore recipes</button>
+          </Link>
         </div>
-      </header>
+      </div>
+      <div className="title-right">
+        <img src={FridgeImage} alt="Fridge" className="hero-fridge-img" />
+      </div>
+    </header>
 
       {/* app features */}
       <section className="features-section">
@@ -119,27 +127,9 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* demo pic! */}
-      <section className="demo-section">
-        <div className="demo-image-placeholder">
-          {/* need to add a pic here */}
-          <img src={FridgeImage} alt="FridgeImage" className="demo-img-small-test" />
-        </div>
-      </section>
-
-      {/* footer? -ask if they want this */}
+      {/* footer */}
       <footer className="footer-section">
-        <div className="footer-logo">
-           <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img-small" />
-        </div>
         <div className="footer-columns">
-          {/*<div className="footer-col">
-            <h4>Add Title</h4>
-            <ul>
-              <li>lala</li>
-              <li>lala</li>
-            </ul>
-          </div>*/}
           <div className="footer-col">
             <h4>Our Design</h4>
             <ul>
@@ -158,8 +148,8 @@ function LandingPage() {
           </div>
         </div>
         <div className="footer-upload" onClick={scrollToTop} style={{ cursor: 'pointer' }}>
-            <span className="upload-icon">↑</span>
-          </div>
+          <span className="upload-icon">↑</span>
+        </div>
       </footer>
     </div>
   );
