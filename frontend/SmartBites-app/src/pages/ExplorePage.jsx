@@ -13,6 +13,13 @@ function ExplorePage() {
     { id: 2, title: 'Salmon Fillet', author: 'Salena Till', description: 'Super easy Salmon recipe that hit the spot!', image: SmartBitesLogo },
   ];
 
+  const scrollToTop = () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      };
+
   const displayedPosts = posts.filter((post) => {
     if (activeFilter === 'All') return true;
     const filterTerm = activeFilter.toLowerCase();
@@ -181,6 +188,29 @@ function ExplorePage() {
             </div>
       </div>
       </div>
+      <footer className="footer-section">
+        <div className="footer-columns">
+          <div className="footer-col">
+            <h4>Our Design</h4>
+            <ul>
+              <li>Design</li>
+              <li>Resources</li>
+              <li>Development features</li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h4>About Us</h4>
+            <ul>
+              <li>Meet our Team</li>
+              <li>Contact Us</li>
+              <li>FAQs</li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-upload" onClick={scrollToTop} style={{ cursor: 'pointer' }}>
+          <span className="upload-icon">↑</span>
+        </div>
+      </footer>
     </div>
   );
 }

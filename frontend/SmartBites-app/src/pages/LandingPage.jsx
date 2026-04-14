@@ -4,7 +4,6 @@ import SmartBitesLogo from '../assets/Smartbites_logo.png';
 import FridgeImage from "../assets/fridge_image.png";
 
 function LandingPage() {
-    //for scroll- so it doesnt snap right up
 
     const [loggedIn, setLoggedIn] = useState(false);
     const [userName, setUserName] = useState('');
@@ -128,16 +127,9 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* footer? -ask if they want this */}
+      {/* footer */}
       <footer className="footer-section">
         <div className="footer-columns">
-          {/*<div className="footer-col">
-            <h4>Add Title</h4>
-            <ul>
-              <li>lala</li>
-              <li>lala</li>
-            </ul>
-          </div>*/}
           <div className="footer-col">
             <h4>Our Design</h4>
             <ul>
@@ -156,8 +148,8 @@ function LandingPage() {
           </div>
         </div>
         <div className="footer-upload" onClick={scrollToTop} style={{ cursor: 'pointer' }}>
-            <span className="upload-icon">↑</span>
-          </div>
+          <span className="upload-icon">↑</span>
+        </div>
       </footer>
     </div>
   );
