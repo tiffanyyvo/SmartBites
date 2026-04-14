@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from gemini_client import GeminiClient
 from routes.auth import auth_bp
+from routes.recipes import recipes_bp
 import base64, os
 from dotenv import load_dotenv
 
@@ -15,6 +16,7 @@ app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 jwt = JWTManager(app)
 gemini = GeminiClient()
 app.register_blueprint(auth_bp, url_prefix='/auth')
+app.register_blueprint(recipes_bp, url_prefix='/recipes')
 
 @app.route("/")
 def home():
