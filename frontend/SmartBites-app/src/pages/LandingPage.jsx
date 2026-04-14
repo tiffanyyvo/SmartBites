@@ -54,21 +54,29 @@ function LandingPage() {
       </nav>
 
       {/* title box */}
-      <header className="title-section">
-        <h1>SmartBites</h1>
-        <h2>Snap. Scan. Savor.</h2>
+    <header className="title-section">
+      <div className="title-left">
+        <h1>Your fridge, <em>reimagined.</em></h1>
+        <h2>Snap a photo of your ingredients. Get personalized recipes instantly. Reduce waste, eat better, savor more.</h2>
         <div className="title-actions">
           {!loggedIn ? (
-            <Link to ="/sign-in">
-                <button className="btn-signin">Login/Register</button>
+            <Link to="/sign-in">
+              <button className="btn-signin">Login/Register</button>
             </Link>
           ) : (
-            <Link to ="/profile">
-                <button className="btn-signin">Hi, {userName}!</button>
+            <Link to="/profile">
+              <button className="btn-signin">Hi, {userName}!</button>
             </Link>
           )}
+          <Link to="/explore">
+            <button className="btn-ghost">Explore recipes</button>
+          </Link>
         </div>
-      </header>
+      </div>
+      <div className="title-right">
+        <img src={FridgeImage} alt="Fridge" className="hero-fridge-img" />
+      </div>
+    </header>
 
       {/* app features */}
       <section className="features-section">
@@ -119,19 +127,8 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* demo pic! */}
-      <section className="demo-section">
-        <div className="demo-image-placeholder">
-          {/* need to add a pic here */}
-          <img src={FridgeImage} alt="FridgeImage" className="demo-img-small-test" />
-        </div>
-      </section>
-
       {/* footer? -ask if they want this */}
       <footer className="footer-section">
-        <div className="footer-logo">
-           <img src={SmartBitesLogo} alt="SmartBites Logo" className="logo-img-small" />
-        </div>
         <div className="footer-columns">
           {/*<div className="footer-col">
             <h4>Add Title</h4>
