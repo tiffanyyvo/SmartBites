@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import SmartBitesLogo from '../assets/Smartbites_logo.png';
-import FridgeImage from "../assets/fridge_image.png";
+import FridgeScan from "../assets/FridgeScan1.png";
 
 function LandingPage() {
 
@@ -74,7 +74,7 @@ function LandingPage() {
         </div>
       </div>
       <div className="title-right">
-        <img src={FridgeImage} alt="Fridge" className="hero-fridge-img" />
+        <img src={FridgeScan} alt="Fridge" className="hero-fridge-img" />
       </div>
     </header>
 
